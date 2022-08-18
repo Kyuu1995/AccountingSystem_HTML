@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>記帳系統。註冊</title>
+    <link href="font/css/fonts.css" rel="stylesheet" type="text/css">
+    <link href="font/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="css/style.css" rel="stylesheet">
     <script>
         function confirm() {
@@ -16,33 +18,43 @@
 
 <body>
     <header>
-        <div>
+        <div class="header">
             <a href="./index.html">
-                <h2>記帳系統</h2>
+                <img src="./images/logo.svg" alt="logo">
+                <div class="title">keep accounts</div>
             </a>
         </div>
     </header>
     <section>
-        <div>
-            <fieldset>
-                <legend>基本資料</legend>
-                <form>
-                    <p><label for="username">帳號︰</label><input type="text" name="username" id="username"></p>
-                    <p><label for="password">密碼︰</label><input type="password" name="password" id="password"></p>
-                    <p><label for="email">信箱︰</label><input type="email" name="email" id="email"></p>
-                    <p>
-                        <input type="button" value="確認" onclick="confirm()">
-                        <input type="reset" value="清除">
-                    </p>
-                </form>
-            </fieldset>
-        </div>
+        <form class="index-form">
+            <div class="index-title">註冊資料</div>
+            <div class="index-input">
+                <p>
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username">
+                </p>
+                <p>
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password">
+                </p>
+                <p>
+                    <label for="email">E-mail</label>
+                    <input type="email" name="email" id="email">
+                </p>
+            </div>
+            <div class="index-button">
+                <input type="reset" value="清除">
+                <input type="button" value="註冊" onclick="confirm()">
+            </div>
+        </form>
     </section>
     <footer>
-        <div>
-            <p>
-                <a href="">參考資料</a>
-            </p>
+        <div class="footer">
+            <div>使用資料</div>
+            <a href="https://fontawesome.com/"><i class="fa-brands fa-square-font-awesome"></i> Font Awesome</a>
+            <a href="https://www.svgrepo.com/"><img src="./images/SVG_Repo_logo.svg"></a>
+            <a href="https://www.iconfinder.com/editor/"><img src="./images/Iconfinder_logo.svg"></a>
+            <a href="https://www.cufonfonts.com/"><img src="./images/CufonFonts_logo.svg"></a>
         </div>
     </footer>
 </body>

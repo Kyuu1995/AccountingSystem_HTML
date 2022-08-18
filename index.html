@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>記帳系統。登入</title>
+    <link href="font/css/fonts.css" rel="stylesheet" type="text/css">
+    <link href="font/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="css/style.css" rel="stylesheet">
     <script>
         function login() {
@@ -24,30 +26,29 @@
         </div>
     </header>
     <section>
-        <div>
-            <form class="index-form">
-                <div class="index-title">登入系統</div>
-                <div class="index-input">
-                    <p></p>
+        <form class="index-form">
+            <div class="index-title">登入系統</div>
+            <div class="index-input">
+                <p>
                     <label for="username">Username<br></label>
                     <input type="text" name="username" id="username">
-                    <p></p>
+                </p>
+                <p>
                     <label for="password">Password<br></label>
                     <input type="password" name="password" id="password">
-                    <p></p>
-                </div>
-                <div class="index-button">
-                    <input type="button" value="登入" onclick="login()">
-                    <input type="reset" value="清除">
-                    <a href="./register.html"><input type="button" value="註冊"></a>
-                </div>
-            </form>
-        </div>
+                </p>
+            </div>
+            <div class="index-button">
+                <a href="./register.html"><input type="button" value="註冊"></a>
+                <input type="reset" value="清除">
+                <input type="button" value="登入" onclick="login()">
+            </div>
+        </form>
     </section>
     <footer>
         <div>
             <p>
-                <a href="">參考資料</a>
+                <a href="">使用資料</a>
             </p>
         </div>
     </footer>
