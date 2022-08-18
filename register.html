@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>記帳系統。註冊</title>
+    <link href="css/style.css" rel="stylesheet">
+    <script>
+        function confirm() {
+
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <div>
+            <a href="./index.html">
+                <h2>記帳系統</h2>
+            </a>
+        </div>
+    </header>
+    <section>
+        <div>
+            <fieldset>
+                <legend>基本資料</legend>
+                <form>
+                    <p><label for="username">帳號︰</label><input type="text" name="username" id="username"></p>
+                    <p><label for="password">密碼︰</label><input type="password" name="password" id="password"></p>
+                    <p><label for="email">信箱︰</label><input type="email" name="email" id="email"></p>
+                    <p>
+                        <input type="button" value="確認" onclick="confirm()">
+                        <input type="reset" value="清除">
+                    </p>
+                </form>
+            </fieldset>
+        </div>
+    </section>
+    <footer>
+        <div>
+            <p>
+                <a href="">參考資料</a>
+            </p>
+        </div>
+    </footer>
+</body>
+
+</html>
