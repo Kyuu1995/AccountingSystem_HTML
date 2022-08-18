@@ -44,10 +44,54 @@ a {
 .index-form .index-title {
     color: white;
     font-size: 30px;
-    margin: 0 0 5px 0;
+    text-align: center;
+}
+
+.index-form .index-title::before,
+.index-form .index-title::after {
+    content: " ";
+    position: absolute;
+    width: 70px;
+    border-bottom: 1px solid white;
+}
+
+.index-form .index-title::before {
+    margin: 20px 0 0 -80px;
+}
+
+.index-form .index-title::after {
+    margin: 20px 0 0 10px;
 }
 
 .index-form .index-button {
     text-align: center;
-    margin: 15px 0 0 0;
+    padding: 10px 0;
+}
+
+.index-form .index-button input {
+    color: white;
+    background-color: rgba(200, 200, 150, 0.75);
+    border: 0;
+    border-radius: 5px;
+    width: 32%;
+    height: 28px;
+    font-size: 16px;
+}
+
+.index-form .index-button input:hover {
+    color: gray;
+    background-color: rgba(200, 200, 150, 1);
+    transition: all .3s ease-in-out;
+    cursor: pointer;
+}
+
+.index-form .index-input label {
+    color: white;
+    font-size: 20px;
+}
+
+.index-form .index-input input {
+    width: 97%;
+    height: 30px;
+    font-size: 20px;
 }
