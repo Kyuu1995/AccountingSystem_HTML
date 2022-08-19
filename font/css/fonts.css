@@ -7,3 +7,10 @@
     font-weight: normal;
     src: local('Cera Round Pro Medium'), url('../webfonts/TypeMates\ \ CeraRoundProMedium.woff') format('woff');
 }
+
+@font-face {
+    font-family: 'Viceroy Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Viceroy Regular'), url('../webfonts/Viceroy.woff') format('woff');
+}

@@ -44,27 +44,32 @@ a:hover {
 
 .footer .footer-title {
     color: white;
-    background-color: rgba(255, 255, 255, 0.5);
     font-size: 15px;
-    height: 30px;
+    height: 25px;
     padding: 0 0 0 7.5px;
-    border: 0;
-    border-radius: 0 0 30px 0;
-    line-height: 32.5px;
+    line-height: 27.5px;
+    font-family: 'Viceroy Regular';
+    text-transform: uppercase;
+    background: linear-gradient(-45deg, transparent 25px, rgba(255, 255, 255, 0.5) 0);
 }
 
 .footer .footer-1 .footer-title {
-    width: 80px;
+    width: 100px;
 }
 
 .footer .footer-2 .footer-title {
-    width: 110px;
+    width: 160px;
 }
 
-.footer .footer-1,
+.footer .footer-1 {
+    background-color: rgba(0, 0, 0, 0.7);
+    width: 55%;
+    float: left;
+}
+
 .footer .footer-2 {
     background-color: rgba(0, 0, 0, 0.7);
-    width: 50%;
+    width: 45%;
     float: left;
 }
 
