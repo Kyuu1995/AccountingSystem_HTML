@@ -2,15 +2,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap');
 
 @font-face {
-    font-family: 'Cera Round Pro Medium';
-    font-style: normal;
-    font-weight: normal;
-    src: local('Cera Round Pro Medium'), url('../webfonts/TypeMates\ \ CeraRoundProMedium.woff') format('woff');
-}
-
-@font-face {
     font-family: 'Viceroy Regular';
     font-style: normal;
     font-weight: normal;
     src: local('Viceroy Regular'), url('../webfonts/Viceroy.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Kotori Rose Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Kotori Rose Regular'), url('../webfonts/KotoriRose-Regular.woff') format('woff');
 }

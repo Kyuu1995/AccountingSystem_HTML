@@ -20,7 +20,7 @@ a:hover {
 
 .header {
     text-align: center;
-    padding: 30px;
+    margin: 30px;
 }
 
 .header .title {
@@ -142,4 +142,43 @@ a:hover {
     font-size: 20px;
 }
 
-/* ---- register ---- */
+/* ---- home ---- */
+.home-section {
+    text-align: center;
+    margin: 100px 0 0 0;
+}
+
+.home-section img {
+    width: 100px;
+}
+
+.home-section .home-item {
+    padding: 30px;
+    margin: 0 50px;
+    width: 140px;
+    height: 140px;
+    text-align: center;
+    display: inline-block;
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 0;
+    border-radius: 140px;
+
+}
+
+.home-section .home-item:hover {
+    transition: all .3s ease-in-out;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.home-section .home-item .home-title {
+    margin: 10px 0 0 0;
+    font-family: 'Kotori Rose Regular';
+    text-transform: uppercase;
+    color: white;
+}
+
+.home-section .home-item:hover .home-title {
+    transition: all .3s ease-in-out;
+    color: rgb(240, 230, 160);
+}
