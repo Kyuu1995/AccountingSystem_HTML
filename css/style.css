@@ -35,19 +35,42 @@ a:hover {
 }
 
 .footer {
-    color: white;
-    background-color: rgba(0, 0, 0, 0.7);
-    padding: 10px 0 0 0;
     margin: 100px 0 0 0;
-}
-
-.footer a {
-    font-size: 20px;
-    font-family: 'Cera Round Pro Medium';
 }
 
 .footer img {
     height: 20px;
+}
+
+.footer .footer-title {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.5);
+    font-size: 15px;
+    height: 30px;
+    padding: 0 0 0 7.5px;
+    border: 0;
+    border-radius: 0 0 30px 0;
+    line-height: 32.5px;
+}
+
+.footer .footer-1 .footer-title {
+    width: 80px;
+}
+
+.footer .footer-2 .footer-title {
+    width: 110px;
+}
+
+.footer .footer-1,
+.footer .footer-2 {
+    background-color: rgba(0, 0, 0, 0.7);
+    width: 50%;
+    float: left;
+}
+
+.footer .footer-a {
+    padding: 10px 0 0 10px;
+    float: left;
 }
 
 /* ---- index + register ---- */
