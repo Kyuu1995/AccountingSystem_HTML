@@ -6,7 +6,16 @@
     margin: 0;
 }
 
+html {
+    height: 100%;
+}
+
+header {
+    text-align: center;
+}
+
 body {
+    height: 100%;
     background-image: url(../images/background.png);
     background-repeat: no-repeat;
     background-position: bottom;
@@ -22,11 +31,14 @@ a:hover {
 }
 
 .header {
-    text-align: center;
     margin: 30px;
+    text-align: center;
+    display: inline-block;
+    position: relative;
 }
 
 .header .title {
+    width: 240px;
     font-size: 30px;
     text-transform: uppercase;
     color: #b4b4b4;
@@ -38,7 +50,9 @@ a:hover {
 }
 
 .footer {
-    margin: 100px 0 0 0;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
 }
 
 .footer img {
@@ -73,7 +87,7 @@ a:hover {
 .footer .footer-2 {
     background-color: rgba(0, 0, 0, 0.7);
     width: 45%;
-    float: left;
+    float: right;
 }
 
 .footer .footer-a {
@@ -112,9 +126,24 @@ a:hover {
     margin: 20px 0 0 10px;
 }
 
+.index-form .index-input p {
+    margin: 25px 0;
+}
+
+.index-form .index-input label {
+    color: white;
+    font-size: 20px;
+}
+
+.index-form .index-input input {
+    width: 99%;
+    height: 30px;
+    font-size: 20px;
+}
+
 .index-form .index-button {
     text-align: center;
-    padding: 10px 0;
+    padding: 0 0 10px 0;
 }
 
 .index-form .index-button input {
@@ -134,21 +163,10 @@ a:hover {
     cursor: pointer;
 }
 
-.index-form .index-input label {
-    color: white;
-    font-size: 20px;
-}
-
-.index-form .index-input input {
-    width: 97%;
-    height: 30px;
-    font-size: 20px;
-}
-
 /* ---- home ---- */
 .home-section {
     text-align: center;
-    margin: 100px 0 0 0;
+    margin: 140px 0 0 0;
 }
 
 .home-section img {
