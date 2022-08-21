@@ -6,27 +6,136 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>記帳系統。記帳。收入</title>
+    <link href="font/css/fonts.css" rel="stylesheet" type="text/css">
+    <link href="font/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="css/style.css" rel="stylesheet">
 </head>
 
 <body>
     <header>
-        <div>
+        <div class="header">
             <a href="./home.html">
-                <h2>記帳系統</h2>
+                <img src="./images/logo.svg" alt="logo">
+                <div class="title">keep accounts</div>
             </a>
         </div>
     </header>
     <section>
-        <div>
-
+        <div class="item-section">
+            <form class="item-form">
+                <span>
+                    <label for="date">日期︰</label>
+                    <input type="date" name="date" id="date">
+                </span>
+                <span>
+                    項目︰
+                    <select>
+                        <option value="0">請選擇項目</option>
+                        <option value="1">食物</option>
+                        <option value="2">居住</option>
+                        <option value="3">交通</option>
+                        <option value="4">娛樂</option>
+                        <option value="5">物品</option>
+                        <option value="6">其他</option>
+                    </select>
+                </span>
+                <span>
+                    <label for="amount">金額︰</label>
+                    <input type="number" name="amount" id="amount">
+                </span>
+                <span>
+                    <label for="Notes">備註︰</label>
+                    <input type="text" name="Notes" id="Notes">
+                </span>
+                <span class="account-button">
+                    <input type="button" value="新增">
+                    <input type="reset" value="清除">
+                </span>
+            </form>
+            <div class="item-table">
+                <table>
+                    <tr>
+                        <th>日期</th>
+                        <th>項目</th>
+                        <th>金額</th>
+                        <th>備註</th>
+                    </tr>
+                </table>
+            </div>
+            <span class="item-button">
+                <input type="button" value="刪除">
+            </span>
+            <span class="item-button">
+                <input type="button" value="更新">
+            </span>
+            <span class="item-button">
+                <input type="button" value="刷新">
+            </span>
         </div>
     </section>
     <footer>
-        <div>
-            <p>
-                <a href="">參考資料</a>
-            </p>
+        <div class="footer">
+            <div class="footer-1">
+                <div class="footer-title">use web</div>
+                <div class="footer-a">
+                    <a href="https://fontawesome.com/" target="_new">
+                        <img src="./images/logo_FontAwesome_.png">
+                    </a>
+                </div>
+                <div class="footer-a">
+                    <a href="https://www.iconfinder.com/editor/" target="_new">
+                        <img src="./images/logo_Iconfinder.svg">
+                    </a>
+                </div>
+                <div class="footer-a">
+                    <a href="https://www.svgrepo.com/" target="_new">
+                        <img src="./images/logo_SVGRepo.svg">
+                    </a>
+                </div>
+                <div class="footer-a">
+                    <a href="https://www.cufonfonts.com/" target="_new">
+                        <img src="./images/logo_CufonFonts.svg">
+                    </a>
+                </div>
+                <div class="footer-a">
+                    <a href="https://pixlr.com/tw/" target="_new">
+                        <img src="./images/logo_Pixlr.svg">
+                    </a>
+                </div>
+            </div>
+            <div class="footer-2">
+                <div class="footer-title">use language</div>
+                <div class="footer-a">
+                    <a href="https://en.wikipedia.org/wiki/HTML" target="_new">
+                        <img src="./images/logo_HTML.svg">
+                    </a>
+                </div>
+                <div class="footer-a">
+                    <a href="https://en.wikipedia.org/wiki/CSS" target="_new">
+                        <img src="./images/logo_CSS.svg">
+                    </a>
+                </div>
+                <div class="footer-a">
+                    <a href="https://en.wikipedia.org/wiki/JavaScript" target="_new">
+                        <img src="./images/logo_JavaScript.svg">
+                    </a>
+                </div>
+                <div class="footer-a">
+                    <a href="https://jquery.com/" target="_new">
+                        <img src="./images/logo_jQuery.svg">
+                    </a>
+                </div>
+                <div class="footer-a">
+                    <a href="https://www.mysql.com/" target="_new">
+                        <img src="./images/logo_MySQL.svg">
+                    </a>
+                </div>
+                <div class="footer-a">
+                    <a href="https://www.oracle.com/java/" target="_new">
+                        <img src="./images/logo_Java.svg">
+                    </a>
+                </div>
+            </div>
         </div>
     </footer>
 </body>

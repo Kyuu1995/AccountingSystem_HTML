@@ -202,3 +202,91 @@ a:hover {
     transition: all .3s ease-in-out;
     color: rgb(240, 230, 160);
 }
+
+/* ---- account + statistical ---- */
+.item-section {
+    text-align: center;
+    margin: 0 30px;
+}
+
+.item-section .item-form {
+    color: white;
+    font-size: 18px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 0;
+    border-radius: 5px;
+}
+
+.item-section .item-form input,
+.item-section .item-form select {
+    border: 2px solid white;
+    border-radius: 2px;
+    vertical-align: middle;
+}
+
+.item-section .item-form span {
+    margin: 0 10px;
+}
+
+.item-section .item-table {
+    background-color: rgba(255, 255, 255, 0.75);
+    height: 340px;
+    margin: 30px 50px;
+    overflow-y: scroll;
+    border: 0;
+    border-radius: 5px;
+}
+
+.item-section .item-table table {
+    width: 100%;
+    text-align: center;
+    margin: auto;
+    border-collapse: collapse;
+}
+
+.item-section .item-table tr {
+    color: white;
+    text-align: center;
+    font-size: 18px;
+    height: 24px;
+    border: 0;
+}
+
+.item-section .item-table th,
+.item-section .item-table td {
+    padding: 5px 20px;
+}
+
+.item-section .item-table tr:nth-child(even) {
+    background-color: rgb(80, 60, 60);
+}
+
+.item-section .item-table tr:nth-child(odd) {
+    background-color: rgba(80, 60, 60, 0.75);
+}
+
+.item-section .item-table tr:first-child {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.item-section .item-button {
+    text-align: center;
+    padding: 0 0 10px 0;
+}
+
+.item-section .item-button input {
+    color: white;
+    background-color: rgba(80, 60, 60, 0.75);
+    border: 0;
+    border-radius: 5px;
+    width: 75px;
+    height: 28px;
+    font-size: 16px;
+}
+
+.item-section .item-button input:hover {
+    color: white;
+    background-color: rgb(80, 60, 60);
+    cursor: pointer;
+}

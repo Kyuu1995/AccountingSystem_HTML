@@ -21,9 +21,31 @@
         </div>
     </header>
     <section>
-        <div>
-
-        </div>
+        <form class="index-form">
+            <div class="index-title">會員資料</div>
+            <div class="index-input">
+                <p>
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username">
+                </p>
+                <p>
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password">
+                </p>
+                <p>
+                    <label for="NickName">Nick Name</label>
+                    <input type="text" name="NickName" id="NickName">
+                </p>
+                <p>
+                    <label for="email">E-mail</label>
+                    <input type="email" name="email" id="email">
+                </p>
+            </div>
+            <div class="index-button">
+                <input type="button" value="修改" onclick="confirm()">
+                <a href="./index.html"><input type="button" value="登出"></a>
+            </div>
+        </form>
     </section>
     <footer>
         <div class="footer">
