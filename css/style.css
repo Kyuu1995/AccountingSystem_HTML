@@ -6,16 +6,11 @@
     margin: 0;
 }
 
-html {
-    height: 100%;
-}
-
 header {
     text-align: center;
 }
 
 body {
-    height: 100%;
     background-image: url(../images/background.png);
     background-repeat: no-repeat;
     background-position: bottom;
@@ -51,8 +46,7 @@ a:hover {
 
 .footer {
     width: 100%;
-    position: absolute;
-    bottom: 0;
+    margin: 30px 0 0 0;
 }
 
 .footer img {
@@ -165,8 +159,11 @@ a:hover {
 
 /* ---- home ---- */
 .home-section {
+    height: 320px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
-    margin: 140px 0 0 0;
 }
 
 .home-section img {
@@ -175,7 +172,7 @@ a:hover {
 
 .home-section .home-item {
     padding: 30px;
-    margin: 0 50px;
+    margin: 25px 50px;
     width: 140px;
     height: 120px;
     text-align: center;
@@ -212,21 +209,21 @@ a:hover {
 .item-section .item-form {
     color: white;
     font-size: 18px;
-    padding: 20px;
+    padding: 0 20px;
     background-color: rgba(0, 0, 0, 0.5);
     border: 0;
     border-radius: 5px;
+}
+
+.item-section .item-form span {
+    display: inline-block;
+    margin: 10px;
 }
 
 .item-section .item-form input,
 .item-section .item-form select {
     border: 2px solid white;
     border-radius: 2px;
-    vertical-align: middle;
-}
-
-.item-section .item-form span {
-    margin: 0 10px;
 }
 
 .item-section .item-table {
@@ -272,7 +269,6 @@ a:hover {
 
 .item-section .item-button {
     text-align: center;
-    padding: 0 0 10px 0;
 }
 
 .item-section .item-button input {
