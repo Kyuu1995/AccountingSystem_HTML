@@ -21,10 +21,22 @@
                 traditional: true,
                 dataType: "json",
                 data: {
+                    table: "income",
                     date: $("#date").val(),
                     item: $("#item").val(),
                     amount: $("#amount").val(),
                     notes: $("#notes").val(),
+                }
+            })
+        }
+        function doAjaxSelect(url) {
+            $.ajax({
+                url: url,
+                type: "post",
+                traditional: true,
+                dataType: "json",
+                data: {
+                    table: "income",
                 }
             })
         }
@@ -39,10 +51,13 @@
                 return true
             }
         }
-        function create() {
+        function Create() {
             if (validate()) {
                 doAjax(doCreate)
             }
+        }
+        function Select() {
+            doAjax(doSelect)
         }
     </script>
 </head>
@@ -58,7 +73,7 @@
     </header>
     <section>
         <div class="item-section">
-            <form class="item-form" name="item-form" method="post" action="/AccountingSystem/doItemServlet">
+            <form class="item-form">
                 <span>
                     <label for="date">日期︰</label>
                     <input type="date" name="date" id="date">
@@ -84,7 +99,7 @@
                     <input type="text" name="notes" id="notes">
                 </span>
                 <span class="item-button">
-                    <input type="button" value="新增" onclick="create()">
+                    <input type="button" value="新增" onclick="Create()">
                     <input type="reset" value="清除">
                 </span>
             </form>
@@ -105,7 +120,7 @@
                 <input type="button" value="更新">
             </span>
             <span class="item-button">
-                <input type="button" value="刷新">
+                <input type="button" value="刷新" onclick="Select()">
             </span>
         </div>
     </section>
