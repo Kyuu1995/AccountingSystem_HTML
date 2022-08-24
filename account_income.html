@@ -14,27 +14,6 @@
         var doDelete = "http://localhost:8080/AccountingSystem/doDelete"
         var doUpdate = "http://localhost:8080/AccountingSystem/doUpdate"
         var doSelect = "http://localhost:8080/AccountingSystem/doSelect"
-        function doAjaxCreate(url) {
-            $.ajax({
-                url: url,
-                type: "post",
-                traditional: true,
-                dataType: "json",
-                data: {
-                    table: "income",
-                    date: $("#date").val(),
-                    item: $("#item").val(),
-                    amount: $("#amount").val(),
-                    notes: $("#notes").val(),
-                },
-                success: function (response) {
-                    alert("s")
-                },
-                error: function (throwException) {
-                    alert("e")
-                }
-            })
-        }
         function validate() {
             if ($("#date").val() == "") {
                 alert("請選擇日期")
@@ -46,12 +25,56 @@
                 return true
             }
         }
-        function Create() {
-            if (validate()) {
-                doAjaxCreate(doCreate)
+        function deleteRow() {
+            var table = document.getElementById("table");
+            var rowNumber = table.rows.length - 1
+            for (var i = 0; i < rowNumber; i++) {
+                table.deleteRow(1);
             }
         }
+        function Create() {
+            if (validate()) {
+                $.ajax({
+                    url: doCreate,
+                    type: "post",
+                    traditional: true,
+                    dataType: "json",
+                    data: {
+                        table: "income",
+                        date: $("#date").val(),
+                        item: $("#item").val(),
+                        amount: $("#amount").val(),
+                        notes: $("#notes").val(),
+                    },
+                    error: function (throwException) {
+                        Select()
+                    }
+                })
+            }
+        }
+        function Update() {
+            $.ajax({
+                url: doCreate,
+                type: "post",
+                traditional: true,
+                dataType: "json",
+                data: {
+                    table: "income",
+
+                    date: $("#date").val(),
+                    item: $("#item").val(),
+                    amount: $("#amount").val(),
+                    notes: $("#notes").val(),
+
+                    dateNew: $("#date").val(),
+                    itemNew: $("#item").val(),
+                    amountNew: $("#amount").val(),
+                    notesNew: $("#notes").val(),
+                }
+            })
+        }
         function Select() {
+            deleteRow()
             $.ajax({
                 url: doSelect,
                 type: "post",
@@ -59,12 +82,7 @@
                 dataType: "json",
                 data: { table: "income" },
                 success: function (response) {
-                    alert("s")
                     var table = document.getElementById("table");
-                    var rowNumber = table.rows.length - 1
-                    for (var i = 0; i < rowNumber; i++) {
-                        table.doDeleteRow(rowNumber)
-                    }
                     for (var i = 0; i < response.length; i++) {
                         var newRow = table.insertRow(i + 1)
                         newRow.insertCell().innerHTML = response[i].date
@@ -74,10 +92,11 @@
                     }
                 },
                 error: function (throwException) {
-                    alert("e")
+                    alert("刷新失敗....")
                 }
             })
         }
+
     </script>
 </head>
 
@@ -133,7 +152,7 @@
                 </table>
             </div>
             <span class="item-button">
-                <input type="button" value="刪除">
+                <input type="button" value="刪除" onclick="Delete()">
             </span>
             <span class="item-button">
                 <input type="button" value="更新">
