@@ -14,7 +14,7 @@
         var doDelete = "http://localhost:8080/AccountingSystem/doDelete"
         var doUpdate = "http://localhost:8080/AccountingSystem/doUpdate"
         var doSelect = "http://localhost:8080/AccountingSystem/doSelect"
-        function doAjax(url) {
+        function doAjaxCreate(url) {
             $.ajax({
                 url: url,
                 type: "post",
@@ -26,6 +26,12 @@
                     item: $("#item").val(),
                     amount: $("#amount").val(),
                     notes: $("#notes").val(),
+                },
+                success: function (response) {
+                    alert("s")
+                },
+                error: function (throwException) {
+                    alert("e")
                 }
             })
         }
@@ -40,21 +46,37 @@
                 return true
             }
         }
-        function addTable() {
-            var table = document.getElementById("table");
-            var newRow = table.insertRow()
-            for (var i = 1; i <= 4; i++) {
-                newRow.insertCell().innerHTML = i
-            }
-        }
         function Create() {
             if (validate()) {
-                doAjax(doCreate)
+                doAjaxCreate(doCreate)
             }
         }
         function Select() {
-            doAjax(doSelect)
-            addTable()
+            $.ajax({
+                url: doSelect,
+                type: "post",
+                traditional: true,
+                dataType: "json",
+                data: { table: "income" },
+                success: function (response) {
+                    alert("s")
+                    var table = document.getElementById("table");
+                    var rowNumber = table.rows.length - 1
+                    for (var i = 0; i < rowNumber; i++) {
+                        table.doDeleteRow(rowNumber)
+                    }
+                    for (var i = 0; i < response.length; i++) {
+                        var newRow = table.insertRow(i + 1)
+                        newRow.insertCell().innerHTML = response[i].date
+                        newRow.insertCell().innerHTML = response[i].item
+                        newRow.insertCell().innerHTML = response[i].amount
+                        newRow.insertCell().innerHTML = response[i].notes
+                    }
+                },
+                error: function (throwException) {
+                    alert("e")
+                }
+            })
         }
     </script>
 </head>
