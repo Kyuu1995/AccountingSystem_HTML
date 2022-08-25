@@ -9,95 +9,6 @@
     <link href="font/css/fonts.css" rel="stylesheet" type="text/css">
     <link href="font/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="css/style.css" rel="stylesheet">
-    <script>
-        var doCreate = "http://localhost:8080/AccountingSystem/doCreate"
-        var doDelete = "http://localhost:8080/AccountingSystem/doDelete"
-        var doUpdate = "http://localhost:8080/AccountingSystem/doUpdate"
-        var doSelect = "http://localhost:8080/AccountingSystem/doSelect"
-        function validate() {
-            if ($("#date").val() == "") {
-                alert("請選擇日期")
-            } else if ($("#item").val() == "0") {
-                alert("請選擇項目")
-            } else if ($("#amount").val() == "") {
-                alert("請輸入金額")
-            } else {
-                return true
-            }
-        }
-        function deleteRow() {
-            var table = document.getElementById("table");
-            var rowNumber = table.rows.length - 1
-            for (var i = 0; i < rowNumber; i++) {
-                table.deleteRow(1);
-            }
-        }
-        function Create() {
-            if (validate()) {
-                $.ajax({
-                    url: doCreate,
-                    type: "post",
-                    traditional: true,
-                    dataType: "json",
-                    data: {
-                        table: "income",
-                        date: $("#date").val(),
-                        item: $("#item").val(),
-                        amount: $("#amount").val(),
-                        notes: $("#notes").val(),
-                    },
-                    error: function (throwException) {
-                        Select()
-                    }
-                })
-            }
-        }
-        function Update() {
-            $.ajax({
-                url: doCreate,
-                type: "post",
-                traditional: true,
-                dataType: "json",
-                data: {
-                    table: "income",
-
-                    date: $("#date").val(),
-                    item: $("#item").val(),
-                    amount: $("#amount").val(),
-                    notes: $("#notes").val(),
-
-                    dateNew: $("#date").val(),
-                    itemNew: $("#item").val(),
-                    amountNew: $("#amount").val(),
-                    notesNew: $("#notes").val(),
-                }
-            })
-        }
-        function Select() {
-            deleteRow()
-            $.ajax({
-                url: doSelect,
-                type: "post",
-                traditional: true,
-                dataType: "json",
-                data: { table: "income" },
-                success: function (response) {
-                    var table = document.getElementById("table");
-                    for (var i = 0; i < response.length; i++) {
-                        var newRow = table.insertRow(i + 1)
-                        newRow.insertCell().innerHTML = response[i].date
-                        newRow.insertCell().innerHTML = response[i].item
-                        newRow.insertCell().innerHTML = response[i].amount
-                        newRow.insertCell().innerHTML = response[i].notes
-                    }
-                },
-                error: function (throwException) {
-                    alert("刷新失敗....")
-                }
-            })
-        }
-
-    </script>
 </head>
 
 <body>
@@ -138,6 +49,7 @@
                 </span>
                 <span class="item-button">
                     <input type="button" value="新增" onclick="Create()">
+                    <input type="button" value="修改" onclick="Update()">
                     <input type="reset" value="清除">
                 </span>
             </form>
@@ -153,9 +65,6 @@
             </div>
             <span class="item-button">
                 <input type="button" value="刪除" onclick="Delete()">
-            </span>
-            <span class="item-button">
-                <input type="button" value="更新">
             </span>
             <span class="item-button">
                 <input type="button" value="刷新" onclick="Select()">
@@ -230,5 +139,112 @@
 </body>
 
 <script src="js/jquery-3.6.0.min.js"></script>
+<script>
+    var user = 1
+    var doCreate = "http://localhost:8080/AccountingSystem/doCreate"
+    var doDelete = "http://localhost:8080/AccountingSystem/doDelete"
+    var doUpdate = "http://localhost:8080/AccountingSystem/doUpdate"
+    var doSelect = "http://localhost:8080/AccountingSystem/doSelect"
+    function validate() {
+        if ($("#date").val() == "") {
+            alert("請選擇日期")
+        } else if ($("#item").val() == "0") {
+            alert("請選擇項目")
+        } else if ($("#amount").val() == "") {
+            alert("請輸入金額")
+        } else {
+            return true
+        }
+    }
+    function deleteRow() {
+        var table = document.getElementById("table")
+        var rowNumber = table.rows.length - 1
+        for (var i = 0; i < rowNumber; i++) {
+            table.deleteRow(1);
+        }
+    }
+    $(document).ready(function () {
+        $("#table tr").click(function () {
+            var trSeq = $(this).parent().find("tr").index($(this)[0])
+            alert("第" + (trSeq + 1) + "行")
+        });
+    })
+    function Create() {
+        if (validate()) {
+            var checked = confirm("確定要新增嗎?")
+            if (checked) {
+                $.ajax({
+                    url: doCreate,
+                    type: "post",
+                    traditional: true,
+                    dataType: "json",
+                    data: {
+                        user: user,
+                        table: "income",
+                        date: $("#date").val(),
+                        item: $("#item").val(),
+                        amount: $("#amount").val(),
+                        notes: $("#notes").val(),
+                    },
+                    error: function (throwException) {
+                        Select()
+                    }
+                })
+            }
+        }
+    }
+    function Update() {
+        var checked = confirm("確定要修改嗎?")
+        if (checked) {
+            $.ajax({
+                url: doCreate,
+                type: "post",
+                traditional: true,
+                dataType: "json",
+                data: {
+                    table: "income",
+
+                    date: $("#date").val(),
+                    item: $("#item").val(),
+                    amount: $("#amount").val(),
+                    notes: $("#notes").val(),
+
+                    dateNew: $("#date").val(),
+                    itemNew: $("#item").val(),
+                    amountNew: $("#amount").val(),
+                    notesNew: $("#notes").val(),
+                }
+            })
+        }
+    }
+    function Delete() {
+        var table = document.getElementById("table")
+        var rows = table.rows[1].cells[1]
+        console.log(rows)
+        alert(rows)
+    }
+    function Select() {
+        deleteRow()
+        $.ajax({
+            url: doSelect,
+            type: "post",
+            traditional: true,
+            dataType: "json",
+            data: { user: user, table: "income" },
+            success: function (response) {
+                for (var i = 0; i < response.length; i++) {
+                    var newRow = table.insertRow(i + 1)
+                    newRow.insertCell().innerHTML = response[i].date
+                    newRow.insertCell().innerHTML = response[i].item
+                    newRow.insertCell().innerHTML = response[i].amount
+                    newRow.insertCell().innerHTML = response[i].notes
+                }
+            },
+            error: function (throwException) {
+                alert("刷新失敗....")
+            }
+        })
+    }
+</script>
 
 </html>
