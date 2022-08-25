@@ -164,9 +164,11 @@
         }
     }
     $(document).ready(function () {
-        $("#table tr").click(function () {
-            var trSeq = $(this).parent().find("tr").index($(this)[0])
-            alert("第" + (trSeq + 1) + "行")
+        $("#table").click(function () {
+            var table = document.getElementById("table")
+            var rows = table.rows[1].cells[1]
+            console.log(rows)
+            alert(rows)
         });
     })
     function Create() {
@@ -218,10 +220,7 @@
         }
     }
     function Delete() {
-        var table = document.getElementById("table")
-        var rows = table.rows[1].cells[1]
-        console.log(rows)
-        alert(rows)
+
     }
     function Select() {
         deleteRow()
