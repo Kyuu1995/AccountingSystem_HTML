@@ -47,9 +47,8 @@
                 </table>
             </div>
             <div class="item-total">
-                <label for="total">總和</label>
-                <input type="text" name="total" id="total" disabled>
-                <label for="total">元</label>
+                <span>總和︰</span>
+                <span name="total" id="total"></span>
             </div>
             <form class="item-form">
                 <span>
@@ -186,7 +185,7 @@
                     newRow.insertCell().innerHTML = response[i].notes
                 }
                 var total = document.getElementById("total")
-                total.value = response[response.length - 1].total
+                total.innerHTML = response[response.length - 1].total
             },
             error: function (throwException) {
                 alert("刷新失敗....")
@@ -215,7 +214,7 @@
                     newRow.insertCell().innerHTML = response[i].notes
                 }
                 var total = document.getElementById("total")
-                total.value = response[response.length - 1].total
+                total.innerHTML = response[response.length - 1].total
             },
             error: function (throwException) {
                 alert("刷新失敗....")

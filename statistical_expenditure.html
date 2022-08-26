@@ -36,8 +36,8 @@
                     <input type="reset" value="清除">
                 </span>
             </form>
-            <div class="item-table">
-                <table name="table" id="table">
+            <div class="item-head">
+                <table>
                     <tr>
                         <th>日期</th>
                         <th>項目</th>
@@ -45,6 +45,13 @@
                         <th>備註</th>
                     </tr>
                 </table>
+            </div>
+            <div class="item-table">
+                <table name="table" id="table"></table>
+            </div>
+            <div class="item-tail">
+                <span>總和︰</span>
+                <span name="total" id="total"></span>
             </div>
             <form class="item-form">
                 <span>
@@ -175,13 +182,15 @@
                 table: "expenditure"
             },
             success: function (response) {
-                for (var i = 0; i < response.length; i++) {
-                    var newRow = table.insertRow(i + 1)
+                for (var i = 0; i < response.length - 1; i++) {
+                    var newRow = table.insertRow(i)
                     newRow.insertCell().innerHTML = response[i].date
                     newRow.insertCell().innerHTML = response[i].item
                     newRow.insertCell().innerHTML = response[i].amount
                     newRow.insertCell().innerHTML = response[i].notes
                 }
+                var total = document.getElementById("total")
+                total.innerHTML = response[response.length - 1].total
             },
             error: function (throwException) {
                 alert("刷新失敗....")
@@ -202,13 +211,15 @@
                 end: $("#end").val()
             },
             success: function (response) {
-                for (var i = 0; i < response.length; i++) {
-                    var newRow = table.insertRow(i + 1)
+                for (var i = 0; i < response.length - 1; i++) {
+                    var newRow = table.insertRow(i)
                     newRow.insertCell().innerHTML = response[i].date
                     newRow.insertCell().innerHTML = response[i].item
                     newRow.insertCell().innerHTML = response[i].amount
                     newRow.insertCell().innerHTML = response[i].notes
                 }
+                var total = document.getElementById("total")
+                total.innerHTML = response[response.length - 1].total
             },
             error: function (throwException) {
                 alert("刷新失敗....")

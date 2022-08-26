@@ -201,7 +201,7 @@ a:hover {
 
 /* ---- account + statistical ---- */
 .item-section {
-    text-align: center;
+
     margin: 0 30px;
 }
 
@@ -212,6 +212,7 @@ a:hover {
     background-color: rgba(0, 0, 0, 0.5);
     border: 0;
     border-radius: 5px;
+    text-align: center;
 }
 
 .item-section .item-form span {
@@ -228,10 +229,9 @@ a:hover {
 .item-section .item-table {
     background-color: rgba(255, 255, 255, 0.75);
     height: 340px;
-    margin: 30px 50px 0 50px;
-    overflow-y: scroll;
-    border: 0;
-    border-top-left-radius: 5px;
+    margin: 0 50px;
+    overflow-x: overlay;
+    overflow-y: overlay;
 }
 
 .item-section .item-table table {
@@ -251,7 +251,8 @@ a:hover {
 
 .item-section .item-table th,
 .item-section .item-table td {
-    padding: 5px 20px;
+    padding: 5px 0;
+    width: 25%;
 }
 
 .item-section .item-table tr:nth-child(even) {
@@ -262,26 +263,42 @@ a:hover {
     background-color: rgba(80, 60, 60, 0.75);
 }
 
-.item-section .item-table tr:first-child {
-    background-color: rgba(0, 0, 0, 0.5);
+.item-section .item-head {
+    background-color: rgb(90, 15, 15);
+    margin: 30px 50px 0 50px;
+    border: 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    text-align: center;
 }
 
-.item-section .item-total {
-    background-color: rgba(255, 255, 255, 0.75);
+.item-section .item-head table {
+    width: 100%;
+    text-align: center;
+    margin: auto;
+}
+
+.item-section .item-head div {
+    width: 24.5%;
+    display: inline-block;
+    position: relative;
+}
+
+.item-section .item-tail {
+    background-color: rgb(90, 15, 15);
+    color: white;
     margin: 0 50px 30px 50px;
-    padding: 30px;
+    padding: 10px 0;
     border: 0;
     border-bottom-left-radius: 5px;
-}
-
-.item-section .item-total input {
-    border: 2px solid white;
-    border-radius: 2px;
+    border-bottom-right-radius: 5px;
+    font-size: 18px;
     text-align: center;
 }
 
 .item-section .item-under {
     margin: 30px 0;
+    text-align: center;
 }
 
 .item-section .item-button {
