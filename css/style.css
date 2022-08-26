@@ -46,7 +46,6 @@ a:hover {
 
 .footer {
     width: 100%;
-    margin: 30px 0 0 0;
 }
 
 .footer img {
@@ -229,10 +228,10 @@ a:hover {
 .item-section .item-table {
     background-color: rgba(255, 255, 255, 0.75);
     height: 340px;
-    margin: 30px 50px;
+    margin: 30px 50px 0 50px;
     overflow-y: scroll;
     border: 0;
-    border-radius: 5px;
+    border-top-left-radius: 5px;
 }
 
 .item-section .item-table table {
@@ -265,6 +264,24 @@ a:hover {
 
 .item-section .item-table tr:first-child {
     background-color: rgba(0, 0, 0, 0.5);
+}
+
+.item-section .item-total {
+    background-color: rgba(255, 255, 255, 0.75);
+    margin: 0 50px 30px 50px;
+    padding: 30px;
+    border: 0;
+    border-bottom-left-radius: 5px;
+}
+
+.item-section .item-total input {
+    border: 2px solid white;
+    border-radius: 2px;
+    text-align: center;
+}
+
+.item-section .item-under {
+    margin: 30px 0;
 }
 
 .item-section .item-button {

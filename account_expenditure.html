@@ -11,7 +11,7 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 
-<body>
+<body onload="Select()">
     <header>
         <div class="header">
             <a href="./home.html">
@@ -29,7 +29,7 @@
                 </span>
                 <span>
                     項目︰
-                    <select>
+                    <select name="item" id="item">
                         <option value="0">請選擇項目</option>
                         <option value="1">薪水</option>
                         <option value="2">獎金</option>
@@ -46,16 +46,17 @@
                     <input type="number" name="amount" id="amount">
                 </span>
                 <span>
-                    <label for="Notes">備註︰</label>
-                    <input type="text" name="Notes" id="Notes">
+                    <label for="notes">備註︰</label>
+                    <input type="text" name="notes" id="notes">
                 </span>
                 <span class="item-button">
-                    <input type="button" value="新增">
+                    <input type="button" value="新增" onclick="Create()">
+                    <input type="button" value="修改" onclick="Update()">
                     <input type="reset" value="清除">
                 </span>
             </form>
             <div class="item-table">
-                <table>
+                <table name="table" id="table">
                     <tr>
                         <th>日期</th>
                         <th>項目</th>
@@ -64,15 +65,19 @@
                     </tr>
                 </table>
             </div>
-            <span class="item-button">
-                <input type="button" value="刪除">
-            </span>
-            <span class="item-button">
-                <input type="button" value="更新">
-            </span>
-            <span class="item-button">
-                <input type="button" value="刷新">
-            </span>
+            <form class="item-form">
+                <span>
+                    <label for="total">總和</label>
+                    <input type="text" name="total" id="total" disabled>
+                    <label for="total">元</label>
+                </span>
+            </form>
+            <div class="item-under">
+                <span class="item-button">
+                    <input type="button" value="刪除" onclick="Delete()">
+                    <input type="button" value="刷新" onclick="Select()">
+                </span>
+            </div>
         </div>
     </section>
     <footer>
@@ -141,5 +146,120 @@
         </div>
     </footer>
 </body>
+
+<script src="js/jquery-3.6.0.min.js"></script>
+<script>
+    var user = 1
+    var doCreate = "http://localhost:8080/AccountingSystem/doCreate"
+    var doDelete = "http://localhost:8080/AccountingSystem/doDelete"
+    var doUpdate = "http://localhost:8080/AccountingSystem/doUpdate"
+    var doSelect = "http://localhost:8080/AccountingSystem/doSelect"
+    var date = new Date()
+    var now = date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-'
+    function validate() {
+        if ($("#date").val() == "") {
+            alert("請選擇日期")
+        } else if ($("#item").val() == "0") {
+            alert("請選擇項目")
+        } else if ($("#amount").val() == "") {
+            alert("請輸入金額")
+        } else {
+            return true
+        }
+    }
+    function deleteRow() {
+        var table = document.getElementById("table")
+        var rowLength = table.rows.length - 1
+        for (var i = 0; i < rowLength; i++) {
+            table.deleteRow(1);
+        }
+    }
+    // $(document).ready(function () {
+    //     $("#table").click(function () {
+    //         var table = document.getElementById("table")
+    //         var rows = table.rows[1].cells[1]
+    //         console.log(rows)
+    //         alert(rows)
+    //     });
+    // })
+    function Create() {
+        if (validate()) {
+            var checked = confirm("確定要新增嗎?")
+            if (checked) {
+                $.ajax({
+                    url: doCreate,
+                    type: "post",
+                    traditional: true,
+                    dataType: "json",
+                    data: {
+                        user: user,
+                        table: "expenditure",
+                        date: $("#date").val(),
+                        item: $("#item").val(),
+                        amount: $("#amount").val(),
+                        notes: $("#notes").val(),
+                    },
+                    error: function (throwException) {
+                        Select()
+                    }
+                })
+            }
+        }
+    }
+    function Update() {
+        var checked = confirm("確定要修改嗎?")
+        if (checked) {
+            $.ajax({
+                url: doCreate,
+                type: "post",
+                traditional: true,
+                dataType: "json",
+                data: {
+                    user: user,
+                    table: "expenditure",
+                    // date: $("#date").val(),
+                    // item: $("#item").val(),
+                    // amount: $("#amount").val(),
+                    // notes: $("#notes").val(),
+                    dateNew: $("#date").val(),
+                    itemNew: $("#item").val(),
+                    amountNew: $("#amount").val(),
+                    notesNew: $("#notes").val(),
+                }
+            })
+        }
+    }
+    function Delete() {
+
+    }
+    function Select() {
+        deleteRow()
+        $.ajax({
+            url: doSelect,
+            type: "post",
+            traditional: true,
+            dataType: "json",
+            data: {
+                now: now,
+                user: user,
+                table: "expenditure"
+            },
+            success: function (response) {
+                for (var i = 0; i < response.length - 1; i++) {
+                    var newRow = table.insertRow(i + 1)
+                    newRow.insertCell().innerHTML = response[i].date
+                    newRow.insertCell().innerHTML = response[i].item
+                    newRow.insertCell().innerHTML = response[i].amount
+                    newRow.insertCell().innerHTML = response[i].notes
+                }
+                var total = document.getElementById("total")
+                total.value = response[response.length - 1].total
+            },
+            error: function (throwException) {
+                alert("刷新失敗....")
+            }
+        })
+    }
+</script>
 
 </html>

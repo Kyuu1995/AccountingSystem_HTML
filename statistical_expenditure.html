@@ -11,7 +11,7 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 
-<body>
+<body onload="SelectAll()">
     <header>
         <div class="header">
             <a href="./home.html">
@@ -25,19 +25,19 @@
             <form class="item-form">
                 <span>
                     <label for="date">起始日期︰</label>
-                    <input type="date" name="date" id="date">
+                    <input type="date" name="start" id="start">
                 </span>
                 <span>
                     <label for="date">最後日期︰</label>
-                    <input type="date" name="date" id="date">
+                    <input type="date" name="end" id="end">
                 </span>
                 <span class="item-button">
-                    <input type="button" value="查詢">
+                    <input type="button" value="查詢" onclick="SelectDate()">
                     <input type="reset" value="清除">
                 </span>
             </form>
             <div class="item-table">
-                <table>
+                <table name="table" id="table">
                     <tr>
                         <th>日期</th>
                         <th>項目</th>
@@ -46,15 +46,44 @@
                     </tr>
                 </table>
             </div>
-            <span class="item-button">
-                <input type="button" value="刪除">
-            </span>
-            <span class="item-button">
-                <input type="button" value="更新">
-            </span>
-            <span class="item-button">
-                <input type="button" value="刷新">
-            </span>
+            <form class="item-form">
+                <span>
+                    <label for="date">日期︰</label>
+                    <input type="date" name="date" id="date">
+                </span>
+                <span>
+                    項目︰
+                    <select name="item" id="item">
+                        <option value="0">請選擇項目</option>
+                        <option value="1">薪水</option>
+                        <option value="2">獎金</option>
+                        <option value="3">分紅</option>
+                        <option value="4">股票</option>
+                        <option value="5">基金</option>
+                        <option value="6">期貨</option>
+                        <option value="7">保險</option>
+                        <option value="8">其他</option>
+                    </select>
+                </span>
+                <span>
+                    <label for="amount">金額︰</label>
+                    <input type="number" name="amount" id="amount">
+                </span>
+                <span>
+                    <label for="notes">備註︰</label>
+                    <input type="text" name="notes" id="notes">
+                </span>
+                <span class="item-button">
+                    <input type="button" value="修改" onclick="Update()">
+                    <input type="reset" value="清除">
+                </span>
+            </form>
+            <div class="item-under">
+                <span class="item-button">
+                    <input type="button" value="刪除" onclick="Delete()">
+                    <input type="button" value="刷新" onclick="SelectAll()">
+                </span>
+            </div>
         </div>
     </section>
     <footer>
@@ -123,5 +152,69 @@
         </div>
     </footer>
 </body>
+
+<script src="js/jquery-3.6.0.min.js"></script>
+<script>
+    var user = 1
+    function deleteRow() {
+        var table = document.getElementById("table")
+        var rowLength = table.rows.length - 1
+        for (var i = 0; i < rowLength; i++) {
+            table.deleteRow(1);
+        }
+    }
+    function SelectAll() {
+        deleteRow()
+        $.ajax({
+            url: "http://localhost:8080/AccountingSystem/doSelectAll",
+            type: "post",
+            traditional: true,
+            dataType: "json",
+            data: {
+                user: user,
+                table: "expenditure"
+            },
+            success: function (response) {
+                for (var i = 0; i < response.length; i++) {
+                    var newRow = table.insertRow(i + 1)
+                    newRow.insertCell().innerHTML = response[i].date
+                    newRow.insertCell().innerHTML = response[i].item
+                    newRow.insertCell().innerHTML = response[i].amount
+                    newRow.insertCell().innerHTML = response[i].notes
+                }
+            },
+            error: function (throwException) {
+                alert("刷新失敗....")
+            }
+        })
+    }
+    function SelectDate() {
+        deleteRow()
+        $.ajax({
+            url: "http://localhost:8080/AccountingSystem/doSelectDate",
+            type: "post",
+            traditional: true,
+            dataType: "json",
+            data: {
+                user: user,
+                table: "expenditure",
+                start: $("#start").val(),
+                end: $("#end").val()
+            },
+            success: function (response) {
+                for (var i = 0; i < response.length; i++) {
+                    var newRow = table.insertRow(i + 1)
+                    newRow.insertCell().innerHTML = response[i].date
+                    newRow.insertCell().innerHTML = response[i].item
+                    newRow.insertCell().innerHTML = response[i].amount
+                    newRow.insertCell().innerHTML = response[i].notes
+                }
+            },
+            error: function (throwException) {
+                alert("刷新失敗....")
+            }
+        })
+    }
+</script>
 
 </html>

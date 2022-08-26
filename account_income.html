@@ -11,7 +11,7 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 
-<body>
+<body onload="Select()">
     <header>
         <div class="header">
             <a href="./home.html">
@@ -63,13 +63,19 @@
                     </tr>
                 </table>
             </div>
-            <span class="item-button">
-                <input type="button" value="刪除" onclick="Delete()">
-            </span>
-            <span class="item-button">
-                <input type="button" value="刷新" onclick="Select()">
-            </span>
-        </div>
+            <form class="item-form">
+                <span>
+                    <label for="total">總和</label>
+                    <input type="text" name="total" id="total" disabled>
+                    <label for="total">元</label>
+                </span>
+            </form>
+            <div class="item-under">
+                <span class="item-button">
+                    <input type="button" value="刪除" onclick="Delete()">
+                    <input type="button" value="刷新" onclick="Select()">
+                </span>
+            </div>
     </section>
     <footer>
         <div class="footer">
@@ -145,6 +151,8 @@
     var doDelete = "http://localhost:8080/AccountingSystem/doDelete"
     var doUpdate = "http://localhost:8080/AccountingSystem/doUpdate"
     var doSelect = "http://localhost:8080/AccountingSystem/doSelect"
+    var date = new Date()
+    var now = date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-'
     function validate() {
         if ($("#date").val() == "") {
             alert("請選擇日期")
@@ -158,19 +166,19 @@
     }
     function deleteRow() {
         var table = document.getElementById("table")
-        var rowNumber = table.rows.length - 1
-        for (var i = 0; i < rowNumber; i++) {
+        var rowLength = table.rows.length - 1
+        for (var i = 0; i < rowLength; i++) {
             table.deleteRow(1);
         }
     }
-    $(document).ready(function () {
-        $("#table").click(function () {
-            var table = document.getElementById("table")
-            var rows = table.rows[1].cells[1]
-            console.log(rows)
-            alert(rows)
-        });
-    })
+    // $(document).ready(function () {
+    //     $("#table").click(function () {
+    //         var table = document.getElementById("table")
+    //         var rows = table.rows[1].cells[1]
+    //         console.log(rows)
+    //         alert(rows)
+    //     });
+    // })
     function Create() {
         if (validate()) {
             var checked = confirm("確定要新增嗎?")
@@ -204,13 +212,12 @@
                 traditional: true,
                 dataType: "json",
                 data: {
+                    user: user,
                     table: "income",
-
-                    date: $("#date").val(),
-                    item: $("#item").val(),
-                    amount: $("#amount").val(),
-                    notes: $("#notes").val(),
-
+                    // date: $("#date").val(),
+                    // item: $("#item").val(),
+                    // amount: $("#amount").val(),
+                    // notes: $("#notes").val(),
                     dateNew: $("#date").val(),
                     itemNew: $("#item").val(),
                     amountNew: $("#amount").val(),
@@ -229,15 +236,21 @@
             type: "post",
             traditional: true,
             dataType: "json",
-            data: { user: user, table: "income" },
+            data: {
+                now: now,
+                user: user,
+                table: "income"
+            },
             success: function (response) {
-                for (var i = 0; i < response.length; i++) {
+                for (var i = 0; i < response.length - 1; i++) {
                     var newRow = table.insertRow(i + 1)
                     newRow.insertCell().innerHTML = response[i].date
                     newRow.insertCell().innerHTML = response[i].item
                     newRow.insertCell().innerHTML = response[i].amount
                     newRow.insertCell().innerHTML = response[i].notes
                 }
+                var total = document.getElementById("total")
+                total.value = response[response.length - 1].total
             },
             error: function (throwException) {
                 alert("刷新失敗....")
