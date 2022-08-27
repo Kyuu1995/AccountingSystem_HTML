@@ -11,7 +11,7 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 
-<body>
+<body onload="SelectAll()">
     <header>
         <div class="header">
             <a href="./home.html">
@@ -25,20 +25,21 @@
             <form class="item-form">
                 <span>
                     <label for="date">起始日期︰</label>
-                    <input type="date" name="date" id="date">
+                    <input type="date" name="start" id="start">
                 </span>
                 <span>
                     <label for="date">最後日期︰</label>
-                    <input type="date" name="date" id="date">
+                    <input type="date" name="end" id="end">
                 </span>
                 <span class="item-button">
-                    <input type="button" value="查詢">
+                    <input type="button" value="查詢" onclick="SelectDate()">
                     <input type="reset" value="清除">
                 </span>
             </form>
-            <div class="item-table">
+            <div class="item-head-total">
                 <table>
                     <tr>
+                        <th>收入/支出</th>
                         <th>日期</th>
                         <th>項目</th>
                         <th>金額</th>
@@ -46,15 +47,26 @@
                     </tr>
                 </table>
             </div>
-            <span class="item-button">
-                <input type="button" value="刪除">
-            </span>
-            <span class="item-button">
-                <input type="button" value="更新">
-            </span>
-            <span class="item-button">
-                <input type="button" value="刷新">
-            </span>
+            <div class="item-table-total">
+                <table name="table" id="table"></table>
+            </div>
+            <div class="item-tail-total">
+                <table>
+                    <tr>
+                        <th></th>
+                        <th name="range" id="range"></th>
+                        <th name="sum" id="sum"></th>
+                        <th name="total" id="total"></th>
+                        <th></th>
+                    </tr>
+                </table>
+            </div>
+            <div class="item-under">
+                <span class="item-button">
+                    <input type="button" value="刪除" onclick="Delete()">
+                    <input type="button" value="刷新" onclick="SelectAll()">
+                </span>
+            </div>
         </div>
     </section>
     <footer>
@@ -123,5 +135,131 @@
         </div>
     </footer>
 </body>
+
+<script src="js/jquery-3.6.0.min.js"></script>
+<script>
+    var user = 1
+    var table = document.getElementById("table")
+    var range = document.getElementById("range")
+    var sum = document.getElementById("sum")
+    var total = document.getElementById("total")
+    function validateSelectDate() {
+        if ($("#start").val() == "") {
+            alert("請選擇要查詢之起始日期....")
+        } else if ($("#end").val() == "") {
+            alert("請選擇要查詢之最後日期....")
+        } else {
+            return true
+        }
+    }
+    function validateUpdate() {
+        if ($("#date").val() == "") {
+            alert("請選擇日期")
+        } else if ($("#item").val() == "0") {
+            alert("請選擇項目")
+        } else if ($("#amount").val() == "") {
+            alert("請輸入金額")
+        } else {
+            return true
+        }
+    }
+    function deleteRow() {
+        var len = table.rows.length
+        for (var i = 0; i < len; i++) {
+            table.deleteRow(0);
+        }
+    }
+    function SelectAll() {
+        deleteRow()
+        $.ajax({
+            url: "http://localhost:8080/AccountingSystem/doSelectAll",
+            type: "post",
+            traditional: true,
+            dataType: "json",
+            data: {
+                user: user,
+            },
+            success: function (response) {
+                for (var i = 0; i < response.length - 1; i++) {
+                    var newRow = table.insertRow(i)
+                    newRow.insertCell().innerHTML = response[i].type
+                    newRow.insertCell().innerHTML = response[i].date
+                    newRow.insertCell().innerHTML = response[i].item
+                    newRow.insertCell().innerHTML = response[i].amount
+                    newRow.insertCell().innerHTML = response[i].notes
+                }
+                range.innerHTML = response[0].date + " ~ " + response[response.length - 2].date
+                sum.innerHTML = "總和(收入-支出)"
+                total.innerHTML = response[response.length - 1].total
+            },
+            error: function (throwException) {
+                range.innerHTML = ""
+                sum.innerHTML = ""
+                total.innerHTML = ""
+                alert("刷新失敗....")
+            }
+        })
+    }
+    function SelectDate() {
+        if (validateSelectDate()) {
+            deleteRow()
+            $.ajax({
+                url: "http://localhost:8080/AccountingSystem/doSelectDate",
+                type: "post",
+                traditional: true,
+                dataType: "json",
+                data: {
+                    user: user,
+                    start: $("#start").val(),
+                    end: $("#end").val()
+                },
+                success: function (response) {
+                    for (var i = 0; i < response.length - 1; i++) {
+                        var newRow = table.insertRow(i)
+                        newRow.insertCell().innerHTML = response[i].type
+                        newRow.insertCell().innerHTML = response[i].date
+                        newRow.insertCell().innerHTML = response[i].item
+                        newRow.insertCell().innerHTML = response[i].amount
+                        newRow.insertCell().innerHTML = response[i].notes
+                    }
+                    range.innerHTML = response[0].date + " ~ " + response[response.length - 2].date
+                    sum.innerHTML = "總和(收入-支出)"
+                    total.innerHTML = response[response.length - 1].total
+                },
+                error: function (throwException) {
+                    range.innerHTML = ""
+                    sum.innerHTML = ""
+                    total.innerHTML = ""
+                    alert("查詢失敗....")
+                }
+            })
+        }
+    }
+    function Update() {
+        if (validateUpdate()) {
+            var checked = confirm("確定要修改嗎?")
+            if (checked) {
+                $.ajax({
+                    url: doCreate,
+                    type: "post",
+                    traditional: true,
+                    dataType: "json",
+                    data: {
+                        user: user,
+                        table: "income",
+                        // date: $("#date").val(),
+                        // item: $("#item").val(),
+                        // amount: $("#amount").val(),
+                        // notes: $("#notes").val(),
+                        dateNew: $("#date").val(),
+                        itemNew: $("#item").val(),
+                        amountNew: $("#amount").val(),
+                        notesNew: $("#notes").val(),
+                    }
+                })
+            }
+        }
+    }
+</script>
 
 </html>

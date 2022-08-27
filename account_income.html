@@ -11,7 +11,7 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 
-<body onload="Select()">
+<body onload="SelectThisMonth()">
     <header>
         <div class="header">
             <a href="./home.html">
@@ -31,12 +31,14 @@
                     項目︰
                     <select name="item" id="item">
                         <option value="0">請選擇項目</option>
-                        <option value="1">食物</option>
-                        <option value="2">居住</option>
-                        <option value="3">交通</option>
-                        <option value="4">娛樂</option>
-                        <option value="5">物品</option>
-                        <option value="6">其他</option>
+                        <option value="1">薪水</option>
+                        <option value="2">獎金</option>
+                        <option value="3">分紅</option>
+                        <option value="4">股票</option>
+                        <option value="5">基金</option>
+                        <option value="6">期貨</option>
+                        <option value="7">保險</option>
+                        <option value="8">其他</option>
                     </select>
                 </span>
                 <span>
@@ -53,8 +55,8 @@
                     <input type="reset" value="清除">
                 </span>
             </form>
-            <div class="item-table">
-                <table name="table" id="table">
+            <div class="item-head">
+                <table>
                     <tr>
                         <th>日期</th>
                         <th>項目</th>
@@ -63,17 +65,23 @@
                     </tr>
                 </table>
             </div>
-            <form class="item-form">
-                <span>
-                    <label for="total">總和</label>
-                    <input type="text" name="total" id="total" disabled>
-                    <label for="total">元</label>
-                </span>
-            </form>
+            <div class="item-table">
+                <table name="table" id="table"></table>
+            </div>
+            <div class="item-tail">
+                <table>
+                    <tr>
+                        <th name="range" id="range"></th>
+                        <th name="sum" id="sum"></th>
+                        <th name="total" id="total"></th>
+                        <th></th>
+                    </tr>
+                </table>
+            </div>
             <div class="item-under">
                 <span class="item-button">
                     <input type="button" value="刪除" onclick="Delete()">
-                    <input type="button" value="刷新" onclick="Select()">
+                    <input type="button" value="刷新" onclick="SelectThisMonth()">
                 </span>
             </div>
     </section>
@@ -147,10 +155,10 @@
 <script src="js/jquery-3.6.0.min.js"></script>
 <script>
     var user = 1
-    var doCreate = "http://localhost:8080/AccountingSystem/doCreate"
-    var doDelete = "http://localhost:8080/AccountingSystem/doDelete"
-    var doUpdate = "http://localhost:8080/AccountingSystem/doUpdate"
-    var doSelect = "http://localhost:8080/AccountingSystem/doSelect"
+    var table = document.getElementById("table")
+    var range = document.getElementById("range")
+    var sum = document.getElementById("sum")
+    var total = document.getElementById("total")
     var date = new Date()
     var now = date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-'
     function validate() {
@@ -166,9 +174,9 @@
     }
     function deleteRow() {
         var table = document.getElementById("table")
-        var rowLength = table.rows.length - 1
-        for (var i = 0; i < rowLength; i++) {
-            table.deleteRow(1);
+        var len = table.rows.length
+        for (var i = 0; i < len; i++) {
+            table.deleteRow(0);
         }
     }
     // $(document).ready(function () {
@@ -184,75 +192,81 @@
             var checked = confirm("確定要新增嗎?")
             if (checked) {
                 $.ajax({
-                    url: doCreate,
+                    url: "http://localhost:8080/AccountingSystem/doCreate",
                     type: "post",
                     traditional: true,
                     dataType: "json",
                     data: {
-                        user: user,
-                        table: "income",
+                        type: 1,
                         date: $("#date").val(),
                         item: $("#item").val(),
                         amount: $("#amount").val(),
                         notes: $("#notes").val(),
+                        user: user,
                     },
                     error: function (throwException) {
-                        Select()
+                        SelectThisMonth()
                     }
                 })
             }
         }
     }
     function Update() {
-        var checked = confirm("確定要修改嗎?")
-        if (checked) {
-            $.ajax({
-                url: doCreate,
-                type: "post",
-                traditional: true,
-                dataType: "json",
-                data: {
-                    user: user,
-                    table: "income",
-                    // date: $("#date").val(),
-                    // item: $("#item").val(),
-                    // amount: $("#amount").val(),
-                    // notes: $("#notes").val(),
-                    dateNew: $("#date").val(),
-                    itemNew: $("#item").val(),
-                    amountNew: $("#amount").val(),
-                    notesNew: $("#notes").val(),
-                }
-            })
+        if (validate()) {
+            var checked = confirm("確定要修改嗎?")
+            if (checked) {
+                $.ajax({
+                    url: "http://localhost:8080/AccountingSystem/doUpdate",
+                    type: "post",
+                    traditional: true,
+                    dataType: "json",
+                    data: {
+                        type: 1,
+                        // date: $("#date").val(),
+                        // item: $("#item").val(),
+                        // amount: $("#amount").val(),
+                        // notes: $("#notes").val(),
+                        user: user,
+                        dateNew: $("#date").val(),
+                        itemNew: $("#item").val(),
+                        amountNew: $("#amount").val(),
+                        notesNew: $("#notes").val(),
+                    }
+                })
+            }
         }
     }
     function Delete() {
 
     }
-    function Select() {
+    function SelectThisMonth() {
         deleteRow()
         $.ajax({
-            url: doSelect,
+            url: "http://localhost:8080/AccountingSystem/doSelectThisMonth",
             type: "post",
             traditional: true,
             dataType: "json",
             data: {
+                type: 1,
                 now: now,
                 user: user,
-                table: "income"
             },
             success: function (response) {
                 for (var i = 0; i < response.length - 1; i++) {
-                    var newRow = table.insertRow(i + 1)
+                    var newRow = table.insertRow(i)
                     newRow.insertCell().innerHTML = response[i].date
                     newRow.insertCell().innerHTML = response[i].item
                     newRow.insertCell().innerHTML = response[i].amount
                     newRow.insertCell().innerHTML = response[i].notes
                 }
-                var total = document.getElementById("total")
-                total.value = response[response.length - 1].total
+                range.innerHTML = response[0].date + " ~ " + response[response.length - 2].date
+                sum.innerHTML = "總和"
+                total.innerHTML = response[response.length - 1].total
             },
             error: function (throwException) {
+                range.innerHTML = ""
+                sum.innerHTML = ""
+                total.innerHTML = ""
                 alert("刷新失敗....")
             }
         })
