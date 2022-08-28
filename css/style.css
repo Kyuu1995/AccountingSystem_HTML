@@ -92,7 +92,7 @@ a:hover {
 .index-form {
     background-color: rgba(0, 0, 0, 0.7);
     padding: 15px;
-    margin: auto;
+    margin: 0 auto 40px auto;
     width: 300px;
     border-radius: 10px;
 }
@@ -120,7 +120,7 @@ a:hover {
 }
 
 .index-form .index-input p {
-    margin: 25px 0;
+    margin: 15px 0 25px 0;
 }
 
 .index-form .index-input label {
@@ -141,7 +141,7 @@ a:hover {
 
 .index-form .index-button input {
     color: white;
-    background-color: rgba(200, 200, 150, 0.75);
+    background-color: rgba(60, 70, 90, 0.75);
     border: 0;
     border-radius: 5px;
     width: 32%;
@@ -151,13 +151,18 @@ a:hover {
 
 .index-form .index-button input:hover {
     color: gray;
-    background-color: rgba(200, 200, 150, 1);
+    background-color: rgb(60, 70, 90);
     transition: all .3s ease-in-out;
     cursor: pointer;
 }
 
+.index-get-form {
+    display: none;
+}
+
 /* ---- home ---- */
 .home-section {
+    margin: 0 0 60px 0;
     height: 320px;
     display: flex;
     justify-content: center;
