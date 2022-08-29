@@ -11,7 +11,7 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 
-<body onload="getVariable()">
+<body onload="getVariable(), showData()">
     <header>
         <div class="header">
             <a href="javascript:;" onclick="doHome()">
@@ -26,23 +26,31 @@
             <div class="index-input">
                 <p>
                     <label for="username">Username</label>
-                    <input type="text" name="username" id="username">
+                    <input type="text" name="username" id="username" disabled>
                 </p>
                 <p>
                     <label for="password">Password</label>
-                    <input type="password" name="password" id="password">
+                    <input type="password" name="password" id="password" disabled>
                 </p>
                 <p>
-                    <label for="NickName">Nick Name</label>
-                    <input type="text" name="NickName" id="NickName">
+                    <label for="Nickname">Nickname</label>
+                    <input type="text" name="Nickname" id="Nickname" disabled>
                 </p>
                 <p>
                     <label for="email">E-mail</label>
-                    <input type="email" name="email" id="email">
+                    <input type="email" name="email" id="email" disabled>
+                </p>
+                <p>
+                    <label for="gender">Gender</label>
+                    <select name="gender" id="gender" disabled>
+                        <option value="0">請選擇項目</option>
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                    </select>
                 </p>
             </div>
             <div class="index-button">
-                <input type="button" value="修改" onclick="modify()">
+                <input type="button" name="modifyBtn" id="modifyBtn" value="修改" onclick="modify()">
                 <a href="./index.html"><input type="button" value="登出"></a>
             </div>
         </form>
@@ -121,15 +129,23 @@
 <script src="js/jquery-3.6.0.min.js"></script>
 <script>
     var variable = document.getElementById("variable")
+    var nickname
+    var user
+    var username = document.getElementById("username")
+    var password = document.getElementById("password")
+    var Nickname = document.getElementById("Nickname")
+    var email = document.getElementById("email")
+    var gender = document.getElementById("gender")
+
     function getVariable() {
         if (location.href.indexOf('?') != -1) {
             var ary = location.href.split('?')[1].split('&')
             for (var i = 0; i <= ary.length - 1; i++) {
                 if (ary[i].split('=')[0] == 'nickname') {
-                    var nickname = ary[i].split('=')[1]
+                    nickname = ary[i].split('=')[1]
                     document.getElementById("nickname").value = nickname
                 } else if (ary[i].split('=')[0] == 'user') {
-                    var user = ary[i].split('=')[1]
+                    user = ary[i].split('=')[1]
                     document.getElementById("user").value = user
                 }
             }
@@ -139,6 +155,63 @@
         variable.method = "get"
         variable.action = "./home.html"
         variable.submit()
+    }
+    function checkPassword() {
+        var thisPassword
+        $.ajax({
+            async: false,
+            url: "http://localhost:8080/AccountingSystem/doCheckPassword",
+            type: "post",
+            traditional: true,
+            dataType: "json",
+            data: {
+                user: user
+            },
+            success: function (response) {
+                thisPassword = response.password
+            }
+        })
+        if (prompt("請輸入密碼︰") == thisPassword) {
+            return true
+        } else {
+            return false
+        }
+    }
+    function updateData() {
+        alert("OK")
+    }
+    function showData() {
+        $.ajax({
+            async: false,
+            url: "http://localhost:8080/AccountingSystem/doShowData",
+            type: "post",
+            traditional: true,
+            dataType: "json",
+            data: {
+                user: user
+            },
+            success: function (response) {
+                username.value = response.username
+                password.value = response.password
+                Nickname.value = nickname
+                email.value = response.email
+                gender.value = response.gender
+            }
+        })
+    }
+    function modify() {
+        var modifyBtn = document.getElementById("modifyBtn")
+        if (checkPassword()) {
+            username.disabled = ""
+            password.disabled = ""
+            Nickname.disabled = ""
+            email.disabled = ""
+            gender.disabled = ""
+            modifyBtn.value = "確定"
+            // modifyBtn.onclick = updateData()
+        } else {
+            alert("密碼輸入錯誤....")
+        }
     }
 </script>
 

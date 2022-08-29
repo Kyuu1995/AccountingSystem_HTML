@@ -126,7 +126,8 @@
     function login() {
         if (validate()) {
             $.ajax({
-                url: "http://localhost:8080/AccountingSystem/doCheckID",
+                async: false,
+                url: "http://localhost:8080/AccountingSystem/doCheckUsername",
                 type: "post",
                 traditional: true,
                 dataType: "json",
@@ -138,6 +139,7 @@
                         alert(response1.message)
                     } else {
                         $.ajax({
+                            async: false,
                             url: "http://localhost:8080/AccountingSystem/doLogin",
                             type: "post",
                             traditional: true,

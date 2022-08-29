@@ -11,7 +11,7 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 
-<body onload="getVariable(), SelectThisMonth()">
+<body onload="getVariable(), selectThisMonth()">
     <header>
         <div class="header">
             <a href="javascript:;" onclick="doHome()">
@@ -50,8 +50,8 @@
                     <input type="text" name="notes" id="notes">
                 </span>
                 <span class="item-button">
-                    <input type="button" value="新增" onclick="Create()">
-                    <input type="button" value="修改" onclick="Update()">
+                    <input type="button" value="新增" onclick="create()">
+                    <input type="button" value="修改" onclick="update()">
                     <input type="reset" value="清除">
                 </span>
             </form>
@@ -80,8 +80,8 @@
             </div>
             <div class="item-under">
                 <span class="item-button">
-                    <input type="button" value="刪除" onclick="Delete()">
-                    <input type="button" value="刷新" onclick="SelectThisMonth()">
+                    <input type="button" value="刪除" onclick="deleteThisRow()">
+                    <input type="button" value="刷新" onclick="selectThisMonth()">
                 </span>
             </div>
         </div>
@@ -214,11 +214,12 @@
     //         alert(rows)
     //     });
     // })
-    function Create() {
+    function create() {
         if (validate()) {
             var checked = confirm("確定要新增嗎?")
             if (checked) {
                 $.ajax({
+                    async: false,
                     url: "http://localhost:8080/AccountingSystem/doCreate",
                     type: "post",
                     traditional: true,
@@ -238,11 +239,49 @@
             }
         }
     }
-    function Update() {
+    function deleteThisRow() {
+
+    }
+    function selectThisMonth() {
+        deleteRow()
+        $.ajax({
+            async: false,
+            url: "http://localhost:8080/AccountingSystem/doSelectThisMonth",
+            type: "post",
+            traditional: true,
+            dataType: "json",
+            data: {
+                type: 1,
+                now: now,
+                user: user
+            },
+            success: function (response) {
+                var len = response.length
+                for (var i = 0; i < len - 1; i++) {
+                    var newRow = table.insertRow(i)
+                    newRow.insertCell().innerHTML = response[i].date
+                    newRow.insertCell().innerHTML = response[i].item
+                    newRow.insertCell().innerHTML = response[i].amount
+                    newRow.insertCell().innerHTML = response[i].notes
+                }
+                range.innerHTML = response[0].date + " ~ " + response[response.length - 2].date
+                sum.innerHTML = "總和"
+                total.innerHTML = response[response.length - 1].total
+            },
+            error: function (throwException) {
+                range.innerHTML = ""
+                sum.innerHTML = ""
+                total.innerHTML = ""
+                alert("刷新失敗....")
+            }
+        })
+    }
+    function update() {
         if (validate()) {
             var checked = confirm("確定要修改嗎?")
             if (checked) {
                 $.ajax({
+                    async: false,
                     url: "http://localhost:8080/AccountingSystem/doUpdate",
                     type: "post",
                     traditional: true,
@@ -262,41 +301,6 @@
                 })
             }
         }
-    }
-    function Delete() {
-
-    }
-    function SelectThisMonth() {
-        deleteRow()
-        $.ajax({
-            url: "http://localhost:8080/AccountingSystem/doSelectThisMonth",
-            type: "post",
-            traditional: true,
-            dataType: "json",
-            data: {
-                type: 1,
-                now: now,
-                user: user
-            },
-            success: function (response) {
-                for (var i = 0; i < response.length - 1; i++) {
-                    var newRow = table.insertRow(i)
-                    newRow.insertCell().innerHTML = response[i].date
-                    newRow.insertCell().innerHTML = response[i].item
-                    newRow.insertCell().innerHTML = response[i].amount
-                    newRow.insertCell().innerHTML = response[i].notes
-                }
-                range.innerHTML = response[0].date + " ~ " + response[response.length - 2].date
-                sum.innerHTML = "總和"
-                total.innerHTML = response[response.length - 1].total
-            },
-            error: function (throwException) {
-                range.innerHTML = ""
-                sum.innerHTML = ""
-                total.innerHTML = ""
-                alert("刷新失敗....")
-            }
-        })
     }
 </script>
 

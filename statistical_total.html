@@ -11,7 +11,7 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 
-<body onload="getVariable(), SelectAll()">
+<body onload="getVariable(), selectAll()">
     <header>
         <div class="header">
             <a href="javascript:;" onclick="doHome()">
@@ -32,7 +32,7 @@
                     <input type="date" name="end" id="end">
                 </span>
                 <span class="item-button">
-                    <input type="button" value="查詢" onclick="SelectDate()">
+                    <input type="button" value="查詢" onclick="selectDate()">
                     <input type="reset" value="清除">
                 </span>
             </form>
@@ -63,8 +63,8 @@
             </div>
             <div class="item-under">
                 <span class="item-button">
-                    <input type="button" value="刪除" onclick="Delete()">
-                    <input type="button" value="刷新" onclick="SelectAll()">
+                    <input type="button" value="刪除" onclick="deleteThisRow()">
+                    <input type="button" value="刷新" onclick="selectAll()">
                 </span>
             </div>
         </div>
@@ -195,9 +195,13 @@
             table.deleteRow(0)
         }
     }
-    function SelectAll() {
+    function deleteThisRow() {
+
+    }
+    function selectAll() {
         deleteRow()
         $.ajax({
+            async: false,
             url: "http://localhost:8080/AccountingSystem/doSelectAll",
             type: "post",
             traditional: true,
@@ -206,7 +210,8 @@
                 user: user
             },
             success: function (response) {
-                for (var i = 0; i < response.length - 1; i++) {
+                var len = response.length
+                for (var i = 0; i < len - 1; i++) {
                     var newRow = table.insertRow(i)
                     newRow.insertCell().innerHTML = response[i].type
                     newRow.insertCell().innerHTML = response[i].date
@@ -226,10 +231,11 @@
             }
         })
     }
-    function SelectDate() {
+    function selectDate() {
         if (validateSelectDate()) {
             deleteRow()
             $.ajax({
+                async: false,
                 url: "http://localhost:8080/AccountingSystem/doSelectDate",
                 type: "post",
                 traditional: true,
@@ -240,7 +246,8 @@
                     end: $("#end").val()
                 },
                 success: function (response) {
-                    for (var i = 0; i < response.length - 1; i++) {
+                    var len = response.length
+                    for (var i = 0; i < len - 1; i++) {
                         var newRow = table.insertRow(i)
                         newRow.insertCell().innerHTML = response[i].type
                         newRow.insertCell().innerHTML = response[i].date
@@ -261,11 +268,12 @@
             })
         }
     }
-    function Update() {
+    function update() {
         if (validateUpdate()) {
             var checked = confirm("確定要修改嗎?")
             if (checked) {
                 $.ajax({
+                    async: false,
                     url: doCreate,
                     type: "post",
                     traditional: true,
