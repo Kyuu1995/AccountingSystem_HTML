@@ -11,10 +11,10 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 
-<body onload="SelectThisMonth()">
+<body onload="getVariable(), SelectThisMonth()">
     <header>
         <div class="header">
-            <a href="./home.html">
+            <a href="javascript:;" onclick="doHome()">
                 <img src="./images/logo.svg" alt="logo">
                 <div class="title">keep accounts</div>
             </a>
@@ -84,6 +84,11 @@
                     <input type="button" value="刷新" onclick="SelectThisMonth()">
                 </span>
             </div>
+        </div>
+        <form class="variable" name="variable" id="variable">
+            <input type="text" name="nickname" id="nickname">
+            <input type="text" name="user" id="user">
+        </form>
     </section>
     <footer>
         <div class="footer">
@@ -154,12 +159,35 @@
 
 <script src="js/jquery-3.6.0.min.js"></script>
 <script>
+    var variable = document.getElementById("variable")
+    var nickname
+    var user
     var table = document.getElementById("table")
     var range = document.getElementById("range")
     var sum = document.getElementById("sum")
     var total = document.getElementById("total")
     var date = new Date()
     var now = date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-'
+
+    function getVariable() {
+        if (location.href.indexOf('?') != -1) {
+            var ary = location.href.split('?')[1].split('&')
+            for (var i = 0; i <= ary.length - 1; i++) {
+                if (ary[i].split('=')[0] == 'nickname') {
+                    nickname = ary[i].split('=')[1]
+                    document.getElementById("nickname").value = nickname
+                } else if (ary[i].split('=')[0] == 'user') {
+                    user = ary[i].split('=')[1]
+                    document.getElementById("user").value = user
+                }
+            }
+        }
+    }
+    function doHome() {
+        variable.method = "get"
+        variable.action = "./home.html"
+        variable.submit()
+    }
     function validate() {
         if ($("#date").val() == "") {
             alert("請選擇日期....")
@@ -175,7 +203,7 @@
         var table = document.getElementById("table")
         var len = table.rows.length
         for (var i = 0; i < len; i++) {
-            table.deleteRow(0);
+            table.deleteRow(0)
         }
     }
     // $(document).ready(function () {
@@ -201,7 +229,7 @@
                         item: $("#item").val(),
                         amount: $("#amount").val(),
                         notes: $("#notes").val(),
-                        user: user,
+                        user: user
                     },
                     error: function (throwException) {
                         SelectThisMonth()
@@ -229,7 +257,7 @@
                         dateNew: $("#date").val(),
                         itemNew: $("#item").val(),
                         amountNew: $("#amount").val(),
-                        notesNew: $("#notes").val(),
+                        notesNew: $("#notes").val()
                     }
                 })
             }
@@ -248,7 +276,7 @@
             data: {
                 type: 1,
                 now: now,
-                user: user,
+                user: user
             },
             success: function (response) {
                 for (var i = 0; i < response.length - 1; i++) {

@@ -40,7 +40,7 @@
                 <input type="button" value="登入" onclick="login()">
             </div>
         </form>
-        <form class="index-get-form" name="index-get-form" id="index-get-form" method="get" action="./home.html">
+        <form class="variable" name="variable" id="variable">
             <input type="text" name="nickname" id="nickname">
             <input type="text" name="user" id="user">
         </form>
@@ -131,16 +131,36 @@
                 traditional: true,
                 dataType: "json",
                 data: {
-                    username: $("#username").val(),
-                    password: $("#password").val()
+                    username: $("#username").val()
                 },
-                success: function (response) {
-                    var nickname = document.getElementById("nickname")
-                    var user = document.getElementById("user")
-                    var form = document.getElementById("index-get-form")
-                    nickname.value = response.nickname
-                    user.value = response.user
-                    form.submit()
+                success: function (response1) {
+                    if (response1.user == "0") {
+                        alert(response1.message)
+                    } else {
+                        $.ajax({
+                            url: "http://localhost:8080/AccountingSystem/doLogin",
+                            type: "post",
+                            traditional: true,
+                            dataType: "json",
+                            data: {
+                                username: $("#username").val(),
+                                password: $("#password").val()
+                            },
+                            success: function (response2) {
+                                if (response2.user == "0") {
+                                    alert(response2.message)
+                                } else {
+                                    document.getElementById("nickname").value = response2.nickname
+                                    document.getElementById("user").value = response2.user
+                                    var variable = document.getElementById("variable")
+                                    variable.method = "get"
+                                    variable.action = "./home.html"
+                                    alert(response2.message)
+                                    variable.submit()
+                                }
+                            }
+                        })
+                    }
                 }
             })
         }

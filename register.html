@@ -9,11 +9,6 @@
     <link href="font/css/fonts.css" rel="stylesheet" type="text/css">
     <link href="font/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="css/style.css" rel="stylesheet">
-    <script>
-        function confirm() {
-
-        }
-    </script>
 </head>
 
 <body>
@@ -38,17 +33,29 @@
                     <input type="password" name="password" id="password">
                 </p>
                 <p>
-                    <label for="NickName">Nick Name</label>
-                    <input type="text" name="NickName" id="NickName">
+                    <label for="passwordCheck">Password Check</label>
+                    <input type="password" name="passwordCheck" id="passwordCheck">
+                </p>
+                <p>
+                    <label for="nickname">Nickname</label>
+                    <input type="text" name="nickname" id="nickname">
                 </p>
                 <p>
                     <label for="email">E-mail</label>
                     <input type="email" name="email" id="email">
                 </p>
+                <p>
+                    <label for="gender">Gender</label>
+                    <select name="gender" id="gender">
+                        <option value="0">請選擇項目</option>
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                    </select>
+                </p>
             </div>
             <div class="index-button">
                 <input type="reset" value="清除">
-                <input type="button" value="註冊" onclick="confirm()">
+                <input type="button" value="註冊" onclick="register()">
             </div>
         </form>
     </section>
@@ -118,5 +125,68 @@
         </div>
     </footer>
 </body>
+
+<script src="js/jquery-3.6.0.min.js"></script>
+<script>
+    function validate() {
+        if ($("#username").val() == "") {
+            alert("請輸入帳號....")
+        } else if ($("#password").val() == "") {
+            alert("請輸入密碼....")
+        } else if ($("#passwordCheck").val() == "") {
+            alert("請再次輸入密碼....")
+        } else if ($("#nickname").val() == "") {
+            alert("請輸入暱稱....")
+        } else if ($("#email").val() == "") {
+            alert("請輸入信箱....")
+        } else if ($("#gender").val() == "0") {
+            alert("請選擇性別....")
+        } else {
+            return true
+        }
+    }
+    function register() {
+        if (validate()) {
+            if ($("#password").val() == $("#passwordCheck").val()) {
+                $.ajax({
+                    url: "http://localhost:8080/AccountingSystem/doCheckID",
+                    type: "post",
+                    traditional: true,
+                    dataType: "json",
+                    data: {
+                        username: $("#username").val(),
+                    },
+                    success: function (response1) {
+                        if (response1.user != "0") {
+                            alert(response1.message)
+                        } else {
+                            $.ajax({
+                                url: "http://localhost:8080/AccountingSystem/doRegister",
+                                type: "post",
+                                traditional: true,
+                                dataType: "json",
+                                data: {
+                                    username: $("#username").val(),
+                                    password: $("#password").val(),
+                                    nickname: $("#nickname").val(),
+                                    email: $("#email").val(),
+                                    gender: $("#gender").val()
+                                },
+                                success: function (response2) {
+                                    alert(response2.message)
+                                    variable.method = "get"
+                                    variable.action = "./index.html"
+                                    variable.submit()
+                                }
+                            })
+                        }
+                    }
+                })
+            } else {
+                alert("再次輸入的密碼和原密碼不相符....")
+            }
+        }
+    }
+</script>
 
 </html>

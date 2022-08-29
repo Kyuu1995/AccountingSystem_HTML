@@ -11,10 +11,10 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 
-<body>
+<body onload="getVariable()">
     <header>
         <div class="header">
-            <a href="./home.html">
+            <a href="javascript:;" onclick="doHome()">
                 <img src="./images/logo.svg" alt="logo">
                 <div class="title">keep accounts</div>
             </a>
@@ -45,6 +45,10 @@
                 <input type="button" value="修改" onclick="modify()">
                 <a href="./index.html"><input type="button" value="登出"></a>
             </div>
+        </form>
+        <form class="variable" name="variable" id="variable">
+            <input type="text" name="nickname" id="nickname">
+            <input type="text" name="user" id="user">
         </form>
     </section>
     <footer>
@@ -113,5 +117,29 @@
         </div>
     </footer>
 </body>
+
+<script src="js/jquery-3.6.0.min.js"></script>
+<script>
+    var variable = document.getElementById("variable")
+    function getVariable() {
+        if (location.href.indexOf('?') != -1) {
+            var ary = location.href.split('?')[1].split('&')
+            for (var i = 0; i <= ary.length - 1; i++) {
+                if (ary[i].split('=')[0] == 'nickname') {
+                    var nickname = ary[i].split('=')[1]
+                    document.getElementById("nickname").value = nickname
+                } else if (ary[i].split('=')[0] == 'user') {
+                    var user = ary[i].split('=')[1]
+                    document.getElementById("user").value = user
+                }
+            }
+        }
+    }
+    function doHome() {
+        variable.method = "get"
+        variable.action = "./home.html"
+        variable.submit()
+    }
+</script>
 
 </html>

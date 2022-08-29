@@ -11,10 +11,10 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 
-<body>
+<body onload="getVariable()">
     <header>
         <div class="header">
-            <a href="./home.html">
+            <a href="javascript:;" onclick="doHome()">
                 <img src="./images/logo.svg" alt="logo">
                 <div class="title">keep accounts</div>
             </a>
@@ -23,24 +23,28 @@
     <section>
         <div class="home-section">
             <span class="home-item">
-                <a href="./account_home.html">
+                <a href="javascript:;" onclick="doAccount()">
                     <img src="./images/item_account.svg" alt="記帳" title="記帳">
                     <div class="home-title">account</div>
                 </a>
             </span>
             <span class="home-item">
-                <a href="./statistical_home.html">
+                <a href="javascript:;" onclick="doStatistical()">
                     <img src="./images/item_statistical.svg" alt="統計" title="統計">
                     <div class="home-title">statistical</div>
                 </a>
             </span>
             <span class="home-item">
-                <a href="./user_home.html">
+                <a href="javascript:;" onclick="doUser()">
                     <img src="./images/item_user.svg" alt="會員資料" title="會員資料">
                     <div class="home-title">user</div>
                 </a>
             </span>
         </div>
+        <form class="variable" name="variable" id="variable">
+            <input type="text" name="nickname" id="nickname">
+            <input type="text" name="user" id="user">
+        </form>
     </section>
     <footer>
         <div class="footer">
@@ -108,5 +112,44 @@
         </div>
     </footer>
 </body>
+
+<script src="js/jquery-3.6.0.min.js"></script>
+<script>
+    var variable = document.getElementById("variable")
+    function getVariable() {
+        if (location.href.indexOf('?') != -1) {
+            var ary = location.href.split('?')[1].split('&')
+            for (var i = 0; i <= ary.length - 1; i++) {
+                if (ary[i].split('=')[0] == 'nickname') {
+                    var nickname = ary[i].split('=')[1]
+                    document.getElementById("nickname").value = nickname
+                } else if (ary[i].split('=')[0] == 'user') {
+                    var user = ary[i].split('=')[1]
+                    document.getElementById("user").value = user
+                }
+            }
+        }
+    }
+    function doHome() {
+        variable.method = "get"
+        variable.action = "./home.html"
+        variable.submit()
+    }
+    function doAccount() {
+        variable.method = "get"
+        variable.action = "./account_home.html"
+        variable.submit()
+    }
+    function doStatistical() {
+        variable.method = "get"
+        variable.action = "./statistical_home.html"
+        variable.submit()
+    }
+    function doUser() {
+        variable.method = "get"
+        variable.action = "./user_home.html"
+        variable.submit()
+    }
+</script>
 
 </html>
