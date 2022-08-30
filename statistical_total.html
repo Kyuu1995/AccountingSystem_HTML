@@ -63,7 +63,7 @@
             </div>
             <div class="item-under">
                 <span class="item-button">
-                    <input type="button" value="刪除" onclick="deleteThisRow()">
+                    <input type="button" value="刪除" onclick="deleteData()">
                     <input type="button" value="刷新" onclick="selectAll()">
                 </span>
             </div>
@@ -195,7 +195,7 @@
             table.deleteRow(0)
         }
     }
-    function deleteThisRow() {
+    function deleteData() {
 
     }
     function selectAll() {
@@ -268,7 +268,7 @@
             })
         }
     }
-    function update() {
+    function updateData() {
         if (validateUpdate()) {
             var checked = confirm("確定要修改嗎?")
             if (checked) {

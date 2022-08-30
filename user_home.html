@@ -22,7 +22,7 @@
     </header>
     <section>
         <form class="index-form">
-            <div class="index-title">會員資料</div>
+            <div class="index-title" name="title" id="title">會員資料</div>
             <div class="index-input">
                 <p>
                     <label for="username">Username</label>
@@ -51,7 +51,11 @@
             </div>
             <div class="index-button">
                 <input type="button" name="modifyBtn" id="modifyBtn" value="修改" onclick="modify()">
-                <a href="./index.html"><input type="button" value="登出"></a>
+                <a href="./index.html"><input type="button" name="signOutBtn" id="signOutBtn" value="登出"></a>
+                <input type="button" name="defineBtn" id="defineBtn" value="確定" onclick="define()"
+                    style="display: none">
+                <input type="button" name="cancelBtn" id="cancelBtn" value="取消" onclick="cancel()"
+                    style="display: none">
             </div>
         </form>
         <form class="variable" name="variable" id="variable">
@@ -131,11 +135,16 @@
     var variable = document.getElementById("variable")
     var nickname
     var user
+    var title = document.getElementById("title")
     var username = document.getElementById("username")
     var password = document.getElementById("password")
     var Nickname = document.getElementById("Nickname")
     var email = document.getElementById("email")
     var gender = document.getElementById("gender")
+    var modifyBtn = document.getElementById("modifyBtn")
+    var signOutBtn = document.getElementById("signOutBtn")
+    var defineBtn = document.getElementById("defineBtn")
+    var cancelBtn = document.getElementById("cancelBtn")
 
     function getVariable() {
         if (location.href.indexOf('?') != -1) {
@@ -177,13 +186,10 @@
             return false
         }
     }
-    function updateData() {
-        alert("OK")
-    }
     function showData() {
         $.ajax({
             async: false,
-            url: "http://localhost:8080/AccountingSystem/doShowData",
+            url: "http://localhost:8080/AccountingSystem/doShowProfile",
             type: "post",
             traditional: true,
             dataType: "json",
@@ -193,25 +199,59 @@
             success: function (response) {
                 username.value = response.username
                 password.value = response.password
-                Nickname.value = nickname
+                Nickname.value = response.nickname
                 email.value = response.email
                 gender.value = response.gender
             }
         })
     }
     function modify() {
-        var modifyBtn = document.getElementById("modifyBtn")
         if (checkPassword()) {
-            username.disabled = ""
+            title.innerHTML = "修改資料"
             password.disabled = ""
             Nickname.disabled = ""
             email.disabled = ""
             gender.disabled = ""
-            modifyBtn.value = "確定"
-            // modifyBtn.onclick = updateData()
+            modifyBtn.style.display = "none"
+            signOutBtn.style.display = "none"
+            defineBtn.style.display = ""
+            cancelBtn.style.display = ""
         } else {
             alert("密碼輸入錯誤....")
         }
+    }
+    function define() {
+        $.ajax({
+            async: false,
+            url: "http://localhost:8080/AccountingSystem/doUpdateProfile",
+            type: "post",
+            traditional: true,
+            dataType: "json",
+            data: {
+                user: user,
+                password: $("#password").val(),
+                nickname: $("#Nickname").val(),
+                email: $("#email").val(),
+                gender: $("#gender").val()
+            },
+            success: function (response) {
+                showData()
+                cancel()
+                alert(response.message)
+                document.getElementById("nickname").value = Nickname.value
+            }
+        })
+    }
+    function cancel() {
+        title.innerHTML = "會員資料"
+        password.disabled = "none"
+        Nickname.disabled = "none"
+        email.disabled = "none"
+        gender.disabled = "none"
+        modifyBtn.style.display = ""
+        signOutBtn.style.display = ""
+        defineBtn.style.display = "none"
+        cancelBtn.style.display = "none"
     }
 </script>
 

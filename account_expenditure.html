@@ -48,14 +48,18 @@
                     <input type="text" name="notes" id="notes">
                 </span>
                 <span class="item-button">
-                    <input type="button" value="新增" onclick="create()">
-                    <input type="button" value="修改" onclick="update()">
-                    <input type="reset" value="清除">
+                    <input type="button" name="createBtn" id="createBtn" value="新增" onclick="createData()">
+                    <input type="reset" name="clearBtn" id="clearBtn" value="清除">
+                    <input type="button" name="updateBtn" id="updateBtn" value="修改" onclick="updateData()"
+                        style="display: none">
+                    <input type="button" name="cancelBtn" id="cancelBtn" value="取消" onclick="cancel()"
+                        style="display: none">
                 </span>
             </form>
             <div class="item-head">
                 <table>
                     <tr>
+                        <th>選取</th>
                         <th>日期</th>
                         <th>項目</th>
                         <th>金額</th>
@@ -69,6 +73,7 @@
             <div class="item-tail">
                 <table>
                     <tr>
+                        <th></th>
                         <th name="range" id="range"></th>
                         <th name="sum" id="sum"></th>
                         <th name="total" id="total"></th>
@@ -78,7 +83,7 @@
             </div>
             <div class="item-under">
                 <span class="item-button">
-                    <input type="button" value="刪除" onclick="deleteThisRow()">
+                    <input type="button" value="刪除" onclick="deleteData()">
                     <input type="button" value="刷新" onclick="selectThisMonth()">
                 </span>
             </div>
@@ -157,15 +162,21 @@
 
 <script src="js/jquery-3.6.0.min.js"></script>
 <script>
-    var variable = document.getElementById("variable")
-    var nickname
-    var user
     var table = document.getElementById("table")
     var range = document.getElementById("range")
     var sum = document.getElementById("sum")
     var total = document.getElementById("total")
-    var date = new Date()
-    var now = date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-'
+    var data = document.getElementById("date")
+    var item = document.getElementById("item")
+    var amount = document.getElementById("amount")
+    var notes = document.getElementById("notes")
+    var createBtn = document.getElementById("createBtn")
+    var clearBtn = document.getElementById("clearBtn")
+    var updateBtn = document.getElementById("updateBtn")
+    var cancelBtn = document.getElementById("cancelBtn")
+    var variable = document.getElementById("variable")
+    var nickname
+    var user
 
     function getVariable() {
         if (location.href.indexOf('?') != -1) {
@@ -198,27 +209,46 @@
         }
     }
     function deleteRow() {
-        var table = document.getElementById("table")
         var len = table.rows.length
         for (var i = 0; i < len; i++) {
             table.deleteRow(0)
         }
     }
-    // $(document).ready(function () {
-    //     $("#table").click(function () {
-    //         var table = document.getElementById("table")
-    //         var rows = table.rows[1].cells[1]
-    //         console.log(rows)
-    //         alert(rows)
-    //     });
-    // })
-    function create() {
+    function choseRow(i) {
+        createBtn.style.display = "none"
+        clearBtn.style.display = "none"
+        updateBtn.style.display = ""
+        cancelBtn.style.display = ""
+        date.value = table.rows[i].cells[1].innerHTML
+        $.ajax({
+            async: false,
+            url: "http://localhost:8080/AccountingSystem/doCreateData",
+            type: "post",
+            traditional: true,
+            dataType: "json",
+            data: {
+                type: 2,
+                date: $("#date").val(),
+                item: $("#item").val(),
+                amount: $("#amount").val(),
+                notes: $("#notes").val(),
+                user: user
+            },
+            success: function (response) {
+                item.value = 1
+            }
+        })
+
+        amount.value = table.rows[i].cells[3].innerHTML
+        notes.value = table.rows[i].cells[4].innerHTML
+    }
+    function createData() {
         if (validate()) {
             var checked = confirm("確定要新增嗎?")
             if (checked) {
                 $.ajax({
                     async: false,
-                    url: "http://localhost:8080/AccountingSystem/doCreate",
+                    url: "http://localhost:8080/AccountingSystem/doCreateData",
                     type: "post",
                     traditional: true,
                     dataType: "json",
@@ -231,16 +261,18 @@
                         user: user
                     },
                     error: function (throwException) {
-                        SelectThisMonth()
+                        selectThisMonth()
                     }
                 })
             }
         }
     }
-    function deleteThisRow() {
+    function deleteData() {
 
     }
     function selectThisMonth() {
+        var today = new Date()
+        var now = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-'
         deleteRow()
         $.ajax({
             async: false,
@@ -257,6 +289,7 @@
                 var len = response.length
                 for (var i = 0; i < len - 1; i++) {
                     var newRow = table.insertRow(i)
+                    newRow.insertCell().innerHTML = "<a href='javascript:;' onclick='choseRow(" + i + ")'><input type='checkbox'></a>"
                     newRow.insertCell().innerHTML = response[i].date
                     newRow.insertCell().innerHTML = response[i].item
                     newRow.insertCell().innerHTML = response[i].amount
@@ -274,13 +307,13 @@
             }
         })
     }
-    function update() {
+    function updateData() {
         if (validate()) {
             var checked = confirm("確定要修改嗎?")
             if (checked) {
                 $.ajax({
                     async: false,
-                    url: "http://localhost:8080/AccountingSystem/doUpdate",
+                    url: "http://localhost:8080/AccountingSystem/doUpdateData",
                     type: "post",
                     traditional: true,
                     dataType: "json",
@@ -299,6 +332,16 @@
                 })
             }
         }
+    }
+    function cancel() {
+        createBtn.style.display = ""
+        clearBtn.style.display = ""
+        updateBtn.style.display = "none"
+        cancelBtn.style.display = "none"
+        date.value = ""
+        item.value = 0
+        amount.value = ""
+        notes.value = ""
     }
 </script>
 
