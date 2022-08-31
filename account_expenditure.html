@@ -11,7 +11,7 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 
-<body onload="getVariable(), selectThisMonth()">
+<body onload="getVariable(), readThisMonth(), resetForm()">
     <header>
         <div class="header">
             <a href="javascript:;" onclick="doHome()">
@@ -49,8 +49,10 @@
                 </span>
                 <span class="item-button">
                     <input type="button" name="createBtn" id="createBtn" value="新增" onclick="createData()">
-                    <input type="reset" name="clearBtn" id="clearBtn" value="清除">
+                    <input type="button" name="clearBtn" id="clearBtn" value="清除" onclick="resetForm()">
                     <input type="button" name="updateBtn" id="updateBtn" value="修改" onclick="updateData()"
+                        style="display: none">
+                    <input type="button" name="deleteBtn" id="deleteBtn" value="刪除" onclick="deleteData()"
                         style="display: none">
                     <input type="button" name="cancelBtn" id="cancelBtn" value="取消" onclick="cancel()"
                         style="display: none">
@@ -83,8 +85,7 @@
             </div>
             <div class="item-under">
                 <span class="item-button">
-                    <input type="button" value="刪除" onclick="deleteData()">
-                    <input type="button" value="刷新" onclick="selectThisMonth()">
+                    <input type="button" value="刷新" onclick="readThisMonth()">
                 </span>
             </div>
         </div>
@@ -162,21 +163,24 @@
 
 <script src="js/jquery-3.6.0.min.js"></script>
 <script>
+    var localDate = new Date()
     var table = document.getElementById("table")
     var range = document.getElementById("range")
     var sum = document.getElementById("sum")
     var total = document.getElementById("total")
-    var data = document.getElementById("date")
+    var date = document.getElementById("date")
     var item = document.getElementById("item")
     var amount = document.getElementById("amount")
     var notes = document.getElementById("notes")
     var createBtn = document.getElementById("createBtn")
     var clearBtn = document.getElementById("clearBtn")
     var updateBtn = document.getElementById("updateBtn")
+    var deleteBtn = document.getElementById("deleteBtn")
     var cancelBtn = document.getElementById("cancelBtn")
     var variable = document.getElementById("variable")
     var nickname
     var user
+    var accountNo
 
     function getVariable() {
         if (location.href.indexOf('?') != -1) {
@@ -218,29 +222,42 @@
         createBtn.style.display = "none"
         clearBtn.style.display = "none"
         updateBtn.style.display = ""
+        deleteBtn.style.display = ""
         cancelBtn.style.display = ""
+        accountNo = table.rows[i].cells[0].childNodes[0].childNodes[0].value
         date.value = table.rows[i].cells[1].innerHTML
         $.ajax({
             async: false,
-            url: "http://localhost:8080/AccountingSystem/doCreateData",
+            url: "http://localhost:8080/AccountingSystem/doGetItemNo",
             type: "post",
             traditional: true,
             dataType: "json",
             data: {
                 type: 2,
-                date: $("#date").val(),
-                item: $("#item").val(),
-                amount: $("#amount").val(),
-                notes: $("#notes").val(),
+                item: table.rows[i].cells[2].innerHTML,
                 user: user
             },
             success: function (response) {
-                item.value = 1
+                item.value = response.item
             }
         })
-
         amount.value = table.rows[i].cells[3].innerHTML
         notes.value = table.rows[i].cells[4].innerHTML
+    }
+    function resetForm() {
+        var today = localDate.getFullYear() + '-' + String(localDate.getMonth() + 1).padStart(2, '0') + '-' + String(localDate.getDate()).padStart(2, '0')
+        date.value = today
+        item.value = 0
+        amount.value = ""
+        notes.value = ""
+    }
+    function cancel() {
+        createBtn.style.display = ""
+        clearBtn.style.display = ""
+        updateBtn.style.display = "none"
+        deleteBtn.style.display = "none"
+        cancelBtn.style.display = "none"
+        resetForm()
     }
     function createData() {
         if (validate()) {
@@ -260,23 +277,21 @@
                         notes: $("#notes").val(),
                         user: user
                     },
-                    error: function (throwException) {
-                        selectThisMonth()
+                    success: function (response) {
+                        alert(response.message)
+                        readThisMonth()
+                        resetForm()
                     }
                 })
             }
         }
     }
-    function deleteData() {
-
-    }
-    function selectThisMonth() {
-        var today = new Date()
-        var now = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-'
+    function readThisMonth() {
+        var now = localDate.getFullYear() + '-' + String(localDate.getMonth() + 1).padStart(2, '0') + '-'
         deleteRow()
         $.ajax({
             async: false,
-            url: "http://localhost:8080/AccountingSystem/doSelectThisMonth",
+            url: "http://localhost:8080/AccountingSystem/doReadThisMonth",
             type: "post",
             traditional: true,
             dataType: "json",
@@ -289,7 +304,7 @@
                 var len = response.length
                 for (var i = 0; i < len - 1; i++) {
                     var newRow = table.insertRow(i)
-                    newRow.insertCell().innerHTML = "<a href='javascript:;' onclick='choseRow(" + i + ")'><input type='checkbox'></a>"
+                    newRow.insertCell().innerHTML = "<a href='javascript:;' onclick='choseRow(" + i + ")'><input type='checkbox' value='" + response[i].accountNo + "'></a>"
                     newRow.insertCell().innerHTML = response[i].date
                     newRow.insertCell().innerHTML = response[i].item
                     newRow.insertCell().innerHTML = response[i].amount
@@ -301,9 +316,8 @@
             },
             error: function (throwException) {
                 range.innerHTML = ""
-                sum.innerHTML = ""
+                sum.innerHTML = "查無資料"
                 total.innerHTML = ""
-                alert("刷新失敗....")
             }
         })
     }
@@ -318,30 +332,43 @@
                     traditional: true,
                     dataType: "json",
                     data: {
-                        user: user,
-                        table: "expenditure",
-                        // date: $("#date").val(),
-                        // item: $("#item").val(),
-                        // amount: $("#amount").val(),
-                        // notes: $("#notes").val(),
-                        dateNew: $("#date").val(),
-                        itemNew: $("#item").val(),
-                        amountNew: $("#amount").val(),
-                        notesNew: $("#notes").val()
+                        accountNo: accountNo,
+                        type: 2,
+                        date: $("#date").val(),
+                        item: $("#item").val(),
+                        amount: $("#amount").val(),
+                        notes: $("#notes").val()
+                    },
+                    success: function (response) {
+                        alert(response.message)
+                        readThisMonth()
+                        cancel()
                     }
                 })
             }
         }
     }
-    function cancel() {
-        createBtn.style.display = ""
-        clearBtn.style.display = ""
-        updateBtn.style.display = "none"
-        cancelBtn.style.display = "none"
-        date.value = ""
-        item.value = 0
-        amount.value = ""
-        notes.value = ""
+    function deleteData() {
+        if (validate()) {
+            var checked = confirm("確定要刪除嗎?")
+            if (checked) {
+                $.ajax({
+                    async: false,
+                    url: "http://localhost:8080/AccountingSystem/doDeleteData",
+                    type: "post",
+                    traditional: true,
+                    dataType: "json",
+                    data: {
+                        accountNo: accountNo
+                    },
+                    success: function (response) {
+                        alert(response.message)
+                        readThisMonth()
+                        cancel()
+                    }
+                })
+            }
+        }
     }
 </script>
 
