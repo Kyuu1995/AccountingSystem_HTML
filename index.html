@@ -22,24 +22,26 @@
         </div>
     </header>
     <section>
-        <form class="index-form" name="index-form" id="index-form">
-            <div class="index-title">登入系統</div>
-            <div class="index-input">
-                <p>
-                    <label for="username">Username<br></label>
-                    <input type="text" name="username" id="username">
-                </p>
-                <p>
-                    <label for="password">Password<br></label>
-                    <input type="password" name="password" id="password">
-                </p>
-            </div>
-            <div class="index-button">
-                <a href="./register.html"><input type="button" value="註冊"></a>
-                <input type="reset" value="清除">
-                <input type="button" value="登入" onclick="login()">
-            </div>
-        </form>
+        <div class="index">
+            <form class="index-form" name="index-form" id="index-form">
+                <div class="index-title">登入系統</div>
+                <div class="index-input">
+                    <p>
+                        <label for="username">Username<br></label>
+                        <input type="text" name="username" id="username">
+                    </p>
+                    <p>
+                        <label for="password">Password<br></label>
+                        <input type="password" name="password" id="password">
+                    </p>
+                </div>
+                <div class="index-button">
+                    <a href="./register.html"><input type="button" value="註冊"></a>
+                    <input type="reset" value="清除">
+                    <input type="button" value="登入" onclick="login()">
+                </div>
+            </form>
+        </div>
         <form class="variable" name="variable" id="variable">
             <input type="text" name="nickname" id="nickname">
             <input type="text" name="user" id="user">

@@ -172,10 +172,13 @@
 
 <script src="js/jquery-3.6.0.min.js"></script>
 <script>
+    var localDate = new Date()
     var table = document.getElementById("table")
     var range = document.getElementById("range")
     var sum = document.getElementById("sum")
     var total = document.getElementById("total")
+    var start = document.getElementById("start")
+    var end = document.getElementById("end")
     var UDform = document.getElementById("UDform")
     var date = document.getElementById("date")
     var item = document.getElementById("item")
@@ -205,7 +208,7 @@
         variable.action = "./home.html"
         variable.submit()
     }
-    function validateSelectDate() {
+    function validateReadDate() {
         if ($("#start").val() == "") {
             alert("請選擇要查詢之起始日期....")
         } else if ($("#end").val() == "") {
@@ -214,7 +217,7 @@
             return true
         }
     }
-    function validateUpdate() {
+    function validate() {
         if ($("#date").val() == "") {
             alert("請選擇日期....")
         } else if ($("#item").val() == "0") {
@@ -253,8 +256,27 @@
         amount.value = table.rows[i].cells[3].innerHTML
         notes.value = table.rows[i].cells[4].innerHTML
     }
-    function deleteData() {
-
+    function resetRform() {
+        start.value = ""
+        end.value = ""
+    }
+    function resetUDform() {
+        var today = localDate.getFullYear() + '-' + String(localDate.getMonth() + 1).padStart(2, '0') + '-' + String(localDate.getDate()).padStart(2, '0')
+        date.value = today
+        item.value = 0
+        amount.value = ""
+        notes.value = ""
+    }
+    function resetTable() {
+        if (start.value != "" && end.value != "") {
+            readTypeDate()
+        } else {
+            readTypeAll()
+        }
+    }
+    function cancel() {
+        UDform.style.display = "none"
+        resetUDform()
     }
     function readTypeAll() {
         deleteRow()
@@ -281,6 +303,7 @@
                 range.innerHTML = response[0].date + " ~ " + response[response.length - 2].date
                 sum.innerHTML = "總和"
                 total.innerHTML = response[response.length - 1].total
+                resetRform()
             },
             error: function (throwException) {
                 range.innerHTML = ""
@@ -290,7 +313,7 @@
         })
     }
     function readTypeDate() {
-        if (validateSelectDate()) {
+        if (validateReadDate()) {
             deleteRow()
             $.ajax({
                 async: false,
@@ -324,6 +347,55 @@
                     total.innerHTML = ""
                 }
             })
+        }
+    }
+    function updateData() {
+        if (validate()) {
+            var checked = confirm("確定要修改嗎?")
+            if (checked) {
+                $.ajax({
+                    async: false,
+                    url: "http://localhost:8080/AccountingSystem/doUpdateData",
+                    type: "post",
+                    traditional: true,
+                    dataType: "json",
+                    data: {
+                        accountNo: accountNo,
+                        type: 2,
+                        date: $("#date").val(),
+                        item: $("#item").val(),
+                        amount: $("#amount").val(),
+                        notes: $("#notes").val()
+                    },
+                    success: function (response) {
+                        alert(response.message)
+                        resetTable()
+                        cancel()
+                    }
+                })
+            }
+        }
+    }
+    function deleteData() {
+        if (validate()) {
+            var checked = confirm("確定要刪除嗎?")
+            if (checked) {
+                $.ajax({
+                    async: false,
+                    url: "http://localhost:8080/AccountingSystem/doDeleteData",
+                    type: "post",
+                    traditional: true,
+                    dataType: "json",
+                    data: {
+                        accountNo: accountNo
+                    },
+                    success: function (response) {
+                        alert(response.message)
+                        resetTable()
+                        cancel()
+                    }
+                })
+            }
         }
     }
 </script>

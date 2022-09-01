@@ -11,7 +11,7 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 
-<body onload="getVariable(), selectTypeAll()">
+<body onload="getVariable(), readTypeAll()">
     <header>
         <div class="header">
             <a href="javascript:;" onclick="doHome()">
@@ -32,13 +32,14 @@
                     <input type="date" name="end" id="end">
                 </span>
                 <span class="item-button">
-                    <input type="button" value="查詢" onclick="selectTypeDate()">
+                    <input type="button" value="查詢" onclick="readTypeDate()">
                     <input type="reset" value="清除">
                 </span>
             </form>
             <div class="item-head">
                 <table>
                     <tr>
+                        <th>選取</th>
                         <th>日期</th>
                         <th>項目</th>
                         <th>金額</th>
@@ -52,6 +53,7 @@
             <div class="item-tail">
                 <table>
                     <tr>
+                        <th></th>
                         <th name="range" id="range"></th>
                         <th name="sum" id="sum"></th>
                         <th name="total" id="total"></th>
@@ -59,7 +61,7 @@
                     </tr>
                 </table>
             </div>
-            <form class="item-form">
+            <form class="item-form" name="UDform" id="UDform" style="display: none;">
                 <span>
                     <label for="date">日期︰</label>
                     <input type="date" name="date" id="date">
@@ -88,13 +90,13 @@
                 </span>
                 <span class="item-button">
                     <input type="button" value="修改" onclick="updateData()">
-                    <input type="reset" value="清除">
+                    <input type="button" value="刪除" onclick="deleteData()">
+                    <input type="button" value="取消" onclick="cancel()">
                 </span>
             </form>
             <div class="item-under">
                 <span class="item-button">
-                    <input type="button" value="刪除" onclick="deleteData()">
-                    <input type="button" value="刷新" onclick="selectTypeAll()">
+                    <input type="button" value="刷新" onclick="readTypeAll()">
                 </span>
             </div>
         </div>
@@ -172,13 +174,22 @@
 
 <script src="js/jquery-3.6.0.min.js"></script>
 <script>
-    var variable = document.getElementById("variable")
-    var nickname
-    var user
+    var localDate = new Date()
     var table = document.getElementById("table")
     var range = document.getElementById("range")
     var sum = document.getElementById("sum")
     var total = document.getElementById("total")
+    var start = document.getElementById("start")
+    var end = document.getElementById("end")
+    var UDform = document.getElementById("UDform")
+    var date = document.getElementById("date")
+    var item = document.getElementById("item")
+    var amount = document.getElementById("amount")
+    var notes = document.getElementById("notes")
+    var variable = document.getElementById("variable")
+    var nickname
+    var user
+    var accountNo
 
     function getVariable() {
         if (location.href.indexOf('?') != -1) {
@@ -208,7 +219,7 @@
             return true
         }
     }
-    function validateUpdate() {
+    function validate() {
         if ($("#date").val() == "") {
             alert("請選擇日期....")
         } else if ($("#item").val() == "0") {
@@ -225,14 +236,55 @@
             table.deleteRow(0)
         }
     }
-    function deleteData() {
-
+    function choseRow(i) {
+        UDform.style.display = ""
+        accountNo = table.rows[i].cells[0].childNodes[0].childNodes[0].value
+        date.value = table.rows[i].cells[1].innerHTML
+        $.ajax({
+            async: false,
+            url: "http://localhost:8080/AccountingSystem/doGetItemNo",
+            type: "post",
+            traditional: true,
+            dataType: "json",
+            data: {
+                type: 1,
+                item: table.rows[i].cells[2].innerHTML,
+                user: user
+            },
+            success: function (response) {
+                item.value = response.item
+            }
+        })
+        amount.value = table.rows[i].cells[3].innerHTML
+        notes.value = table.rows[i].cells[4].innerHTML
     }
-    function selectTypeAll() {
+    function resetRform() {
+        start.value = ""
+        end.value = ""
+    }
+    function resetUDform() {
+        var today = localDate.getFullYear() + '-' + String(localDate.getMonth() + 1).padStart(2, '0') + '-' + String(localDate.getDate()).padStart(2, '0')
+        date.value = today
+        item.value = 0
+        amount.value = ""
+        notes.value = ""
+    }
+    function resetTable() {
+        if (start.value != "" && end.value != "") {
+            readTypeDate()
+        } else {
+            readTypeAll()
+        }
+    }
+    function cancel() {
+        UDform.style.display = "none"
+        resetUDform()
+    }
+    function readTypeAll() {
         deleteRow()
         $.ajax({
             async: false,
-            url: "http://localhost:8080/AccountingSystem/doSelectTypeAll",
+            url: "http://localhost:8080/AccountingSystem/doReadTypeAll",
             type: "post",
             traditional: true,
             dataType: "json",
@@ -244,6 +296,7 @@
                 var len = response.length
                 for (var i = 0; i < len - 1; i++) {
                     var newRow = table.insertRow(i)
+                    newRow.insertCell().innerHTML = "<a href='javascript:;' onclick='choseRow(" + i + ")'><input type='checkbox' value='" + response[i].accountNo + "'></a>"
                     newRow.insertCell().innerHTML = response[i].date
                     newRow.insertCell().innerHTML = response[i].item
                     newRow.insertCell().innerHTML = response[i].amount
@@ -252,21 +305,21 @@
                 range.innerHTML = response[0].date + " ~ " + response[response.length - 2].date
                 sum.innerHTML = "總和"
                 total.innerHTML = response[response.length - 1].total
+                resetRform()
             },
             error: function (throwException) {
                 range.innerHTML = ""
-                sum.innerHTML = ""
+                sum.innerHTML = "查無資料"
                 total.innerHTML = ""
-                alert("刷新失敗....")
             }
         })
     }
-    function selectTypeDate() {
+    function readTypeDate() {
         if (validateSelectDate()) {
             deleteRow()
             $.ajax({
                 async: false,
-                url: "http://localhost:8080/AccountingSystem/doSelectTypeDate",
+                url: "http://localhost:8080/AccountingSystem/doReadTypeDate",
                 type: "post",
                 traditional: true,
                 dataType: "json",
@@ -280,6 +333,7 @@
                     var len = response.length
                     for (var i = 0; i < len - 1; i++) {
                         var newRow = table.insertRow(i)
+                        newRow.insertCell().innerHTML = "<a href='javascript:;' onclick='choseRow(" + i + ")'><input type='checkbox' value='" + response[i].accountNo + "'></a>"
                         newRow.insertCell().innerHTML = response[i].date
                         newRow.insertCell().innerHTML = response[i].item
                         newRow.insertCell().innerHTML = response[i].amount
@@ -291,34 +345,56 @@
                 },
                 error: function (throwException) {
                     range.innerHTML = ""
-                    sum.innerHTML = ""
+                    sum.innerHTML = "查無資料"
                     total.innerHTML = ""
-                    alert("查詢失敗....")
                 }
             })
         }
     }
     function updateData() {
-        if (validateUpdate()) {
+        if (validate()) {
             var checked = confirm("確定要修改嗎?")
             if (checked) {
                 $.ajax({
                     async: false,
-                    url: doCreate,
+                    url: "http://localhost:8080/AccountingSystem/doUpdateData",
                     type: "post",
                     traditional: true,
                     dataType: "json",
                     data: {
-                        user: user,
-                        table: "income",
-                        // date: $("#date").val(),
-                        // item: $("#item").val(),
-                        // amount: $("#amount").val(),
-                        // notes: $("#notes").val(),
-                        dateNew: $("#date").val(),
-                        itemNew: $("#item").val(),
-                        amountNew: $("#amount").val(),
-                        notesNew: $("#notes").val()
+                        accountNo: accountNo,
+                        type: 1,
+                        date: $("#date").val(),
+                        item: $("#item").val(),
+                        amount: $("#amount").val(),
+                        notes: $("#notes").val()
+                    },
+                    success: function (response) {
+                        alert(response.message)
+                        resetTable()
+                        cancel()
+                    }
+                })
+            }
+        }
+    }
+    function deleteData() {
+        if (validate()) {
+            var checked = confirm("確定要刪除嗎?")
+            if (checked) {
+                $.ajax({
+                    async: false,
+                    url: "http://localhost:8080/AccountingSystem/doDeleteData",
+                    type: "post",
+                    traditional: true,
+                    dataType: "json",
+                    data: {
+                        accountNo: accountNo
+                    },
+                    success: function (response) {
+                        alert(response.message)
+                        resetTable()
+                        cancel()
                     }
                 })
             }

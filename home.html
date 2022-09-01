@@ -11,7 +11,7 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 
-<body onload="getVariable()">
+<body onload="getVariable(), welcome()">
     <header>
         <div class="header">
             <a href="javascript:;" onclick="doHome()">
@@ -19,9 +19,10 @@
                 <div class="title">keep accounts</div>
             </a>
         </div>
+        <div name="welcome" id="welcome"></div>
     </header>
     <section>
-        <div class="home-section">
+        <div class="home">
             <span class="home-item">
                 <a href="javascript:;" onclick="doAccount()">
                     <img src="./images/item_account.svg" alt="記帳" title="記帳">
@@ -116,19 +117,25 @@
 <script src="js/jquery-3.6.0.min.js"></script>
 <script>
     var variable = document.getElementById("variable")
+    var nickname
+    var user
     function getVariable() {
         if (location.href.indexOf('?') != -1) {
             var ary = location.href.split('?')[1].split('&')
             for (var i = 0; i <= ary.length - 1; i++) {
                 if (ary[i].split('=')[0] == 'nickname') {
-                    var nickname = ary[i].split('=')[1]
+                    nickname = ary[i].split('=')[1]
                     document.getElementById("nickname").value = nickname
                 } else if (ary[i].split('=')[0] == 'user') {
-                    var user = ary[i].split('=')[1]
+                    user = ary[i].split('=')[1]
                     document.getElementById("user").value = user
                 }
             }
         }
+    }
+    function welcome() {
+        var welcome = document.getElementById("welcome")
+        welcome.innerHTML = nickname + " welcom!!"
     }
     function doHome() {
         variable.method = "get"

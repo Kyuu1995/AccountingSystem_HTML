@@ -6,15 +6,19 @@
     margin: 0;
 }
 
-header {
-    text-align: center;
+html {
+    min-height: 100%;
+    position: relative;
 }
 
 body {
-    background-image: url(../images/background.png);
+    background-image: url(../images/background.jpg);
     background-repeat: no-repeat;
-    background-position: bottom;
+    background-attachment: fixed;
+    background-position: top;
     background-size: cover;
+    margin-bottom: 90px;
+    min-height: 520px;
 }
 
 a {
@@ -25,6 +29,10 @@ a:hover {
     cursor: pointer;
 }
 
+header {
+    text-align: center;
+}
+
 .header {
     margin: 30px;
     text-align: center;
@@ -33,11 +41,14 @@ a:hover {
 }
 
 .header .title {
-    width: 240px;
+    margin: 15px 0 0 0;
+    width: 270px;
     font-size: 30px;
     text-transform: uppercase;
-    color: #b4b4b4;
+    color: white;
     font-family: 'Rajdhani', sans-serif;
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
 }
 
 .header img {
@@ -45,7 +56,10 @@ a:hover {
 }
 
 .footer {
+    position: absolute;
+    bottom: 0;
     width: 100%;
+    height: 59px;
 }
 
 .footer img {
@@ -93,10 +107,20 @@ a:hover {
 }
 
 /* ---- index + register ---- */
+.index {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    min-height: 300px;
+    top: 220px;
+    bottom: 90px;
+}
+
 .index-form {
     background-color: rgba(0, 0, 0, 0.7);
     padding: 15px;
-    margin: 0 auto 40px auto;
+    margin: 0 auto;
     width: 300px;
     border-radius: 10px;
 }
@@ -167,45 +191,45 @@ a:hover {
 }
 
 /* ---- home ---- */
-.home-section {
-    margin: 0 0 60px 0;
-    height: 320px;
+.home {
     display: flex;
     justify-content: center;
     align-items: center;
-    text-align: center;
+    position: absolute;
+    width: 100%;
+    min-height: 300px;
+    top: 220px;
+    bottom: 90px;
 }
 
-.home-section img {
+.home img {
     width: 100px;
 }
 
-.home-section .home-item {
+.home-item {
     padding: 30px;
     margin: 25px 50px;
     width: 140px;
     height: 120px;
     text-align: center;
-    display: inline-block;
-    position: relative;
     background-color: rgba(0, 0, 0, 0.5);
     border: 0;
     border-radius: 50px;
 }
 
-.home-section .home-item:hover {
+.home-item:hover {
     transition: all .3s ease-in-out;
     background-color: rgba(0, 0, 0, 0.7);
 }
 
-.home-section .home-item .home-title {
+.home-item .home-title {
     margin: 10px 0 0 0;
     font-family: 'Kotori Rose Regular';
     text-transform: uppercase;
     color: white;
 }
 
-.home-section .home-item:hover .home-title {
+.home-item:hover .home-title {
     transition: all .3s ease-in-out;
     color: rgb(240, 230, 160);
 }
@@ -237,40 +261,33 @@ a:hover {
     border-radius: 2px;
 }
 
-.item-section .item-head,
-.item-section .item-head-total {
+.item-section .item-head {
     margin: 30px 50px 0 50px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
 
-.item-section .item-tail,
-.item-section .item-tail-total {
+.item-section .item-tail {
     margin: 0 50px 30px 50px;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
 }
 
 .item-section .item-head,
-.item-section .item-tail,
-.item-section .item-head-total,
-.item-section .item-tail-total {
+.item-section .item-tail {
     background-color: rgb(35, 40, 55);
     border: 0;
     text-align: center;
 }
 
 .item-section .item-head table,
-.item-section .item-tail table,
-.item-section .item-head-total table,
-.item-section .item-tail-total table {
+.item-section .item-tail table {
     width: 100%;
     text-align: center;
     margin: auto;
 }
 
-.item-section .item-table,
-.item-section .item-table-total {
+.item-section .item-table {
     background-color: rgba(255, 255, 255, 0.75);
     height: 340px;
     margin: 0 50px;
@@ -278,8 +295,7 @@ a:hover {
     overflow-y: overlay;
 }
 
-.item-section .item-table table,
-.item-section .item-table-total table {
+.item-section .item-table table {
     width: 100%;
     text-align: center;
     margin: auto;
@@ -301,13 +317,6 @@ a:hover {
     width: 20%;
 }
 
-.item-section .item-head-total th,
-.item-section .item-tail-total th,
-.item-section .item-table-total td {
-    padding: 5px 0;
-    width: 20%;
-}
-
 .item-section .item-table tr:nth-child(even),
 .item-section .item-table-total tr:nth-child(even) {
     background-color: rgb(60, 70, 90);
@@ -319,7 +328,6 @@ a:hover {
 }
 
 .item-section .item-under {
-    margin: 30px 0;
     text-align: center;
 }
 
