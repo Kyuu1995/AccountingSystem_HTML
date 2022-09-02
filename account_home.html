@@ -11,14 +11,16 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 
-<body onload="getVariable()">
+<body onload="getVariable(), welcome()">
     <header>
         <div class="header">
             <a href="javascript:;" onclick="doHome()">
                 <img src="./images/logo.svg" alt="logo">
-                <div class="title">keep accounts</div>
+                <div class="title">k<span class="span-1">e</span><span class="span-2">e</span>p a<span
+                        class="span-1">cc</span>ount<span class="span-2">s</span></div>
             </a>
         </div>
+        <div class="welcome" name="welcome" id="welcome"></div>
     </header>
     <section>
         <div class="home">
@@ -110,23 +112,34 @@
 <script src="js/jquery-3.6.0.min.js"></script>
 <script>
     var variable = document.getElementById("variable")
+    var nickname
+    var user
     function getVariable() {
         if (location.href.indexOf('?') != -1) {
             var ary = location.href.split('?')[1].split('&')
             for (var i = 0; i <= ary.length - 1; i++) {
                 if (ary[i].split('=')[0] == 'nickname') {
-                    var nickname = ary[i].split('=')[1]
+                    nickname = ary[i].split('=')[1]
                     document.getElementById("nickname").value = nickname
                 } else if (ary[i].split('=')[0] == 'user') {
-                    var user = ary[i].split('=')[1]
+                    user = ary[i].split('=')[1]
                     document.getElementById("user").value = user
                 }
             }
         }
     }
+    function welcome() {
+        var welcome = document.getElementById("welcome")
+        welcome.innerHTML = nickname + "您正在使用 >> <a href='javascript:;' onclick='doAccount()'>Account</a>"
+    }
     function doHome() {
         variable.method = "get"
         variable.action = "./home.html"
+        variable.submit()
+    }
+    function doAccount() {
+        variable.method = "get"
+        variable.action = "./account_home.html"
         variable.submit()
     }
     function doIncome() {

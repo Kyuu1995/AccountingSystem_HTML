@@ -23,10 +23,12 @@ body {
 
 a {
     text-decoration: none;
+    color: #acacac;
 }
 
 a:hover {
     cursor: pointer;
+    color: #ffffaa;
 }
 
 header {
@@ -35,20 +37,25 @@ header {
 
 .header {
     margin: 30px;
-    text-align: center;
     display: inline-block;
     position: relative;
 }
 
 .header .title {
-    margin: 15px 0 0 0;
-    width: 270px;
-    font-size: 30px;
-    text-transform: uppercase;
+    margin: 10px 0 0 0;
+    width: 450px;
     color: white;
-    font-family: 'Rajdhani', sans-serif;
-    border-top: 1px solid white;
-    border-bottom: 1px solid white;
+    font-size: 45px;
+    font-family: 'Month Flower Regular';
+    text-transform: uppercase;
+}
+
+.header .title .span-1 {
+    color: #ffffaa;
+}
+
+.header .title .span-2 {
+    color: #132049;
 }
 
 .header img {
@@ -106,6 +113,18 @@ header {
     display: none;
 }
 
+.welcome {
+    margin: -10px auto 30px auto;
+    padding: 5px 10px;
+    width: fit-content;
+    color: #ffffff;
+    background-color: #232837;
+    font-size: 20px;
+    font-family: 'AaKeAiRiXiZhongWen JianFan';
+    border: 0;
+    border-radius: 5px;
+}
+
 /* ---- index + register ---- */
 .index {
     display: flex;
@@ -113,7 +132,7 @@ header {
     position: absolute;
     width: 100%;
     min-height: 300px;
-    top: 220px;
+    top: 205px;
     bottom: 90px;
 }
 
@@ -128,6 +147,7 @@ header {
 .index-form .index-title {
     color: white;
     font-size: 30px;
+    font-family: 'QingNingYouYuan';
     text-align: center;
 }
 
@@ -154,6 +174,7 @@ header {
 .index-form .index-input label {
     color: white;
     font-size: 20px;
+    font-family: 'AaXiaoXingXing JianFan';
 }
 
 .index-form .index-input input {
@@ -174,20 +195,26 @@ header {
 }
 
 .index-form .index-button input {
-    color: white;
-    background-color: rgba(60, 70, 90, 0.75);
+    color: #ffffff;
+    background-color: #3c465a;
     border: 0;
     border-radius: 5px;
     width: 32%;
     height: 28px;
     font-size: 16px;
+    font-family: 'QingNingYouYuan';
 }
 
 .index-form .index-button input:hover {
-    color: gray;
-    background-color: rgb(60, 70, 90);
-    transition: all .3s ease-in-out;
+    color: #ffffff;
+    background-color: #232837;
+    transition: all .1s ease-in-out;
     cursor: pointer;
+}
+
+.index-form .index-button input:active {
+    color: #232837;
+    background-color: #5c6170;
 }
 
 /* ---- home ---- */
@@ -198,7 +225,7 @@ header {
     position: absolute;
     width: 100%;
     min-height: 300px;
-    top: 220px;
+    top: 245px;
     bottom: 90px;
 }
 
@@ -218,20 +245,20 @@ header {
 }
 
 .home-item:hover {
-    transition: all .3s ease-in-out;
+    transition: all .15s ease-in-out;
     background-color: rgba(0, 0, 0, 0.7);
 }
 
 .home-item .home-title {
     margin: 10px 0 0 0;
-    font-family: 'Kotori Rose Regular';
+    font-family: 'AaXiaoXingXing JianFan';
     text-transform: uppercase;
     color: white;
 }
 
 .home-item:hover .home-title {
-    transition: all .3s ease-in-out;
-    color: rgb(240, 230, 160);
+    transition: all .15s ease-in-out;
+    color: #ffffaa;
 }
 
 /* ---- account + statistical ---- */
@@ -242,6 +269,7 @@ header {
 
 .item-section .item-form {
     color: white;
+    font-family: 'QingNingYouYuan';
     font-size: 18px;
     padding: 0 20px;
     background-color: rgba(0, 0, 0, 0.5);
@@ -275,7 +303,7 @@ header {
 
 .item-section .item-head,
 .item-section .item-tail {
-    background-color: rgb(35, 40, 55);
+    background-color: #232837;
     border: 0;
     text-align: center;
 }
@@ -305,7 +333,8 @@ header {
 .item-section tr {
     color: white;
     text-align: center;
-    font-size: 18px;
+    font-size: 20px;
+    font-family: 'QingNingYouYuan';
     height: 24px;
     border: 0;
 }
@@ -313,21 +342,22 @@ header {
 .item-section .item-head th,
 .item-section .item-tail th,
 .item-section .item-table td {
-    padding: 5px 0;
+    padding: 7.8px 0;
     width: 20%;
 }
 
 .item-section .item-table tr:nth-child(even),
 .item-section .item-table-total tr:nth-child(even) {
-    background-color: rgb(60, 70, 90);
+    background-color: #3c465a;
 }
 
 .item-section .item-table tr:nth-child(odd),
 .item-section .item-table-total tr:nth-child(odd) {
-    background-color: rgba(60, 70, 90, 0.75);
+    background-color: #3c465ace;
 }
 
 .item-section .item-under {
+    margin: 30px 0;
     text-align: center;
 }
 
@@ -337,16 +367,23 @@ header {
 
 .item-section .item-button input {
     color: white;
-    background-color: rgba(60, 70, 90, 0.75);
+    background-color: #3c465a;
     border: 0;
     border-radius: 5px;
     width: 75px;
     height: 28px;
     font-size: 16px;
+    font-family: 'QingNingYouYuan';
 }
 
 .item-section .item-button input:hover {
-    color: white;
-    background-color: rgb(60, 70, 90);
+    color: #ffffff;
+    background-color: #232837;
+    transition: all .1s ease-in-out;
     cursor: pointer;
+}
+
+.item-section .item-button input:active {
+    color: #232837;
+    background-color: #5c6170;
 }

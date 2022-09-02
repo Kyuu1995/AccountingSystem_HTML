@@ -1,16 +1,41 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap');
+@font-face {
+    font-family: '';
+    font-style: normal;
+    font-weight: normal;
+    src: local(''), url('../webfonts/fonts') format('woff');
+}
 
 @font-face {
     font-family: 'Viceroy Regular';
     font-style: normal;
     font-weight: normal;
-    src: local('Viceroy Regular'), url('../webfonts/Viceroy.woff') format('woff');
+    src: local('Viceroy Regular'), url('../webfonts/fonts/Viceroy.woff') format('woff');
 }
 
 @font-face {
-    font-family: 'Kotori Rose Regular';
+    font-family: 'Month Flower Regular';
     font-style: normal;
     font-weight: normal;
-    src: local('Kotori Rose Regular'), url('../webfonts/KotoriRose-Regular.woff') format('woff');
+    src: local('Month Flower Regular'), url('../webfonts/fonts/MonthFlower.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'AaKeAiRiXiZhongWen JianFan';
+    font-style: normal;
+    font-weight: normal;
+    src: local('AaKeAiRiXiZhongWen JianFan'), url('../webfonts/fonts/AaKeAiRiXiZhongWen-JianFan.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'AaXiaoXingXing JianFan';
+    font-style: normal;
+    font-weight: normal;
+    src: local('AaXiaoXingXing JianFan'), url('../webfonts/fonts/AaXiaoXingXing-JianFan.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'QingNingYouYuan';
+    font-style: normal;
+    font-weight: normal;
+    src: local('QingNingYouYuan'), url('../webfonts/fonts/QingNingYouYuan.woff') format('woff');
 }
