@@ -11,7 +11,7 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 
-<body onload="getVariable(), showData()">
+<body onload="getVariable(), showProfile()">
     <header>
         <div class="header">
             <a href="javascript:;" onclick="doHome()">
@@ -25,23 +25,27 @@
         <form class="index-form">
             <div class="index-title" name="title" id="title">會員資料</div>
             <div class="index-input">
-                <p>
-                    <label for="username">Username</label>
+                <p name="usernameP" id="usernameP" style="display: none">
+                    <label for="username">Username<br></label>
                     <input type="text" name="username" id="username" disabled>
                 </p>
-                <p>
-                    <label for="password">Password</label>
-                    <input type="password" name="password" id="password" disabled>
+                <p name="passwordP" id="passwordP" style="display: none">
+                    <label for="password">Password<br></label>
+                    <input type="password" name="password" id="password">
                 </p>
-                <p>
+                <p name="passwordCheckP" id="passwordCheckP" style="display: none">
+                    <label for="passwordCheck">Password Check</label>
+                    <input type="password" name="passwordCheck" id="passwordCheck">
+                </p>
+                <p name="NicknameP" id="NicknameP">
                     <label for="Nickname">Nickname</label>
                     <input type="text" name="Nickname" id="Nickname" disabled>
                 </p>
-                <p>
+                <p name="emailP" id="emailP">
                     <label for="email">E-mail</label>
                     <input type="email" name="email" id="email" disabled>
                 </p>
-                <p>
+                <p name="genderP" id="genderP">
                     <label for="gender">Gender</label>
                     <select name="gender" id="gender" disabled>
                         <option value="0">請選擇項目</option>
@@ -52,11 +56,16 @@
             </div>
             <div class="index-button">
                 <input type="button" name="modifyBtn" id="modifyBtn" value="修改" onclick="modify()">
+                <input type="button" name="modifyDefineBtn" id="modifyDefineBtn" value="確定" onclick="modifyDefine()"
+                    style="display: none">
+                <input type="button" name="modifyCancelBtn" id="modifyCancelBtn" value="取消" onclick="modifyCancel()"
+                    style="display: none">
+                <input type="button" name="changeBtn" id="changeBtn" value="變更密碼" onclick="change()">
+                <input type="button" name="changeDefineBtn" id="changeDefineBtn" value="確定" onclick="changeDefine()"
+                    style="display: none">
+                <input type="button" name="changeCancelBtn" id="changeCancelBtn" value="取消" onclick="changeCancel()"
+                    style="display: none">
                 <a href="./index.html"><input type="button" name="signOutBtn" id="signOutBtn" value="登出"></a>
-                <input type="button" name="defineBtn" id="defineBtn" value="確定" onclick="define()"
-                    style="display: none">
-                <input type="button" name="cancelBtn" id="cancelBtn" value="取消" onclick="cancel()"
-                    style="display: none">
             </div>
         </form>
         <form class="variable" name="variable" id="variable">
@@ -132,6 +141,7 @@
 </body>
 
 <script src="js/jquery-3.6.0.min.js"></script>
+<script src="js/md5.js"></script>
 <script>
     var variable = document.getElementById("variable")
     var nickname
@@ -139,13 +149,23 @@
     var title = document.getElementById("title")
     var username = document.getElementById("username")
     var password = document.getElementById("password")
+    var passwordCheck = document.getElementById("passwordCheck")
     var Nickname = document.getElementById("Nickname")
     var email = document.getElementById("email")
     var gender = document.getElementById("gender")
+    var usernameP = document.getElementById("usernameP")
+    var passwordP = document.getElementById("passwordP")
+    var passwordCheckP = document.getElementById("passwordCheckP")
+    var NicknameP = document.getElementById("NicknameP")
+    var emailP = document.getElementById("emailP")
+    var genderP = document.getElementById("genderP")
     var modifyBtn = document.getElementById("modifyBtn")
+    var modifyDefineBtn = document.getElementById("modifyDefineBtn")
+    var modifyCancelBtn = document.getElementById("modifyCancelBtn")
+    var changeBtn = document.getElementById("changeBtn")
+    var changeDefineBtn = document.getElementById("changeDefineBtn")
+    var changeCancelBtn = document.getElementById("changeCancelBtn")
     var signOutBtn = document.getElementById("signOutBtn")
-    var defineBtn = document.getElementById("defineBtn")
-    var cancelBtn = document.getElementById("cancelBtn")
 
     function getVariable() {
         if (location.href.indexOf('?') != -1) {
@@ -166,6 +186,15 @@
         variable.action = "./home.html"
         variable.submit()
     }
+    function validate() {
+        if ($("#password").val() == "") {
+            alert("請輸入新密碼....")
+        } else if ($("#passwordCheck").val() == "") {
+            alert("請再次輸入新密碼....")
+        } else {
+            return true
+        }
+    }
     function checkPassword() {
         var thisPassword
         $.ajax({
@@ -181,13 +210,13 @@
                 thisPassword = response.password
             }
         })
-        if (prompt("請輸入密碼︰") == thisPassword) {
+        if (hex_md5(prompt("請輸入密碼︰")) == thisPassword) {
             return true
         } else {
             return false
         }
     }
-    function showData() {
+    function showProfile() {
         $.ajax({
             async: false,
             url: "http://localhost:8080/AccountingSystem/doShowProfile",
@@ -198,8 +227,6 @@
                 user: user
             },
             success: function (response) {
-                username.value = response.username
-                password.value = response.password
                 Nickname.value = response.nickname
                 email.value = response.email
                 gender.value = response.gender
@@ -209,19 +236,19 @@
     function modify() {
         if (checkPassword()) {
             title.innerHTML = "修改資料"
-            password.disabled = ""
             Nickname.disabled = ""
             email.disabled = ""
             gender.disabled = ""
             modifyBtn.style.display = "none"
+            modifyDefineBtn.style.display = ""
+            modifyCancelBtn.style.display = ""
+            changeBtn.style.display = "none"
             signOutBtn.style.display = "none"
-            defineBtn.style.display = ""
-            cancelBtn.style.display = ""
         } else {
             alert("密碼輸入錯誤....")
         }
     }
-    function define() {
+    function modifyDefine() {
         $.ajax({
             async: false,
             url: "http://localhost:8080/AccountingSystem/doUpdateProfile",
@@ -230,30 +257,105 @@
             dataType: "json",
             data: {
                 user: user,
-                password: $("#password").val(),
                 nickname: $("#Nickname").val(),
                 email: $("#email").val(),
                 gender: $("#gender").val()
             },
             success: function (response) {
-                showData()
-                cancel()
+                showProfile()
+                modifyCancel()
                 alert(response.message)
                 document.getElementById("nickname").value = Nickname.value
             }
         })
     }
-    function cancel() {
-        showData()
+    function modifyCancel() {
+        showProfile()
         title.innerHTML = "會員資料"
-        password.disabled = "none"
         Nickname.disabled = "none"
         email.disabled = "none"
         gender.disabled = "none"
         modifyBtn.style.display = ""
+        modifyDefineBtn.style.display = "none"
+        modifyCancelBtn.style.display = "none"
+        changeBtn.style.display = ""
         signOutBtn.style.display = ""
-        defineBtn.style.display = "none"
-        cancelBtn.style.display = "none"
+    }
+    function change() {
+        if (checkPassword()) {
+            title.innerHTML = "變更密碼"
+            usernameP.style.display = ""
+            passwordP.style.display = ""
+            passwordCheckP.style.display = ""
+            NicknameP.style.display = "none"
+            emailP.style.display = "none"
+            genderP.style.display = "none"
+            modifyBtn.style.display = "none"
+            changeBtn.style.display = "none"
+            changeDefineBtn.style.display = ""
+            changeCancelBtn.style.display = ""
+            signOutBtn.style.display = "none"
+            $.ajax({
+                async: false,
+                url: "http://localhost:8080/AccountingSystem/doShowUsername",
+                type: "post",
+                traditional: true,
+                dataType: "json",
+                data: {
+                    user: user
+                },
+                success: function (response) {
+                    username.value = response.username
+                }
+            })
+        } else {
+            alert("密碼輸入錯誤....")
+        }
+    }
+    function changeDefine() {
+        if (validate()) {
+            if ($("#password").val() == $("#passwordCheck").val()) {
+                $.ajax({
+                    async: false,
+                    url: "http://localhost:8080/AccountingSystem/doUpdatePassword",
+                    type: "post",
+                    traditional: true,
+                    dataType: "json",
+                    data: {
+                        user: user,
+                        password: hex_md5($("#password").val())
+                    },
+                    success: function (response) {
+                        password.value = ""
+                        passwordCheck.value = ""
+                        changeCancel()
+                        showProfile()
+                        modifyCancel()
+                        alert(response.message)
+                    }
+                })
+            } else {
+                alert("再次輸入的密碼和原密碼不相符....")
+                passwordCheck.value = ""
+            }
+        }
+    }
+    function changeCancel() {
+        showProfile()
+        title.innerHTML = "會員資料"
+        password.value = ""
+        passwordCheck.value = ""
+        usernameP.style.display = "none"
+        passwordP.style.display = "none"
+        passwordCheckP.style.display = "none"
+        NicknameP.style.display = ""
+        emailP.style.display = ""
+        genderP.style.display = ""
+        modifyBtn.style.display = ""
+        changeBtn.style.display = ""
+        changeDefineBtn.style.display = "none"
+        changeCancelBtn.style.display = "none"
+        signOutBtn.style.display = ""
     }
 </script>
 

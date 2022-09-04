@@ -38,8 +38,8 @@
                     <input type="password" name="passwordCheck" id="passwordCheck">
                 </p>
                 <p>
-                    <label for="nickname">Nickname</label>
-                    <input type="text" name="nickname" id="nickname">
+                    <label for="Nickname">Nickname</label>
+                    <input type="text" name="Nickname" id="Nickname">
                 </p>
                 <p>
                     <label for="email">E-mail</label>
@@ -58,6 +58,10 @@
                 <input type="reset" value="清除">
                 <input type="button" value="註冊" onclick="register()">
             </div>
+        </form>
+        <form class="variable" name="variable" id="variable">
+            <input type="text" name="nickname" id="nickname">
+            <input type="text" name="user" id="user">
         </form>
     </section>
     <footer>
@@ -128,6 +132,7 @@
 </body>
 
 <script src="js/jquery-3.6.0.min.js"></script>
+<script src="js/md5.js"></script>
 <script>
     function validate() {
         if ($("#username").val() == "") {
@@ -136,7 +141,7 @@
             alert("請輸入密碼....")
         } else if ($("#passwordCheck").val() == "") {
             alert("請再次輸入密碼....")
-        } else if ($("#nickname").val() == "") {
+        } else if ($("#Nickname").val() == "") {
             alert("請輸入暱稱....")
         } else if ($("#email").val() == "") {
             alert("請輸入信箱....")
@@ -170,16 +175,37 @@
                                 dataType: "json",
                                 data: {
                                     username: $("#username").val(),
-                                    password: $("#password").val(),
-                                    nickname: $("#nickname").val(),
+                                    password: hex_md5($("#password").val()),
+                                    nickname: $("#Nickname").val(),
                                     email: $("#email").val(),
                                     gender: $("#gender").val()
                                 },
                                 success: function (response2) {
                                     alert(response2.message)
-                                    variable.method = "get"
-                                    variable.action = "./index.html"
-                                    variable.submit()
+                                    $.ajax({
+                                        async: false,
+                                        url: "http://localhost:8080/AccountingSystem/doLogin",
+                                        type: "post",
+                                        traditional: true,
+                                        dataType: "json",
+                                        data: {
+                                            username: $("#username").val(),
+                                            password: hex_md5($("#password").val())
+                                        },
+                                        success: function (response3) {
+                                            if (response3.user == "0") {
+                                                alert(response3.message)
+                                            } else {
+                                                alert(response3.message)
+                                                document.getElementById("nickname").value = response3.nickname
+                                                document.getElementById("user").value = response3.user
+                                                var variable = document.getElementById("variable")
+                                                variable.method = "get"
+                                                variable.action = "./home.html"
+                                                variable.submit()
+                                            }
+                                        }
+                                    })
                                 }
                             })
                         }
