@@ -252,7 +252,7 @@
     }
     function choseRow(i) {
         UDform.style.display = ""
-        accountNo = table.rows[i].cells[0].childNodes[0].childNodes[0].value
+        accountNo = table.rows[i].cells[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].value
         date.value = table.rows[i].cells[1].innerHTML
         $.ajax({
             async: false,
@@ -271,6 +271,11 @@
         })
         amount.value = table.rows[i].cells[3].innerHTML
         notes.value = table.rows[i].cells[4].innerHTML
+        var rowsLength = table.rows.length
+        for (var j = 0; j < rowsLength; j++) {
+            table.rows[j].cells[0].childNodes[0].style.backgroundColor = "#ffffff"
+        }
+        table.rows[i].cells[0].childNodes[0].style.backgroundColor = "#232837"
     }
     function resetRform() {
         start.value = ""
@@ -291,6 +296,10 @@
         }
     }
     function cancel() {
+        var rowsLength = table.rows.length
+        for (var j = 0; j < rowsLength; j++) {
+            table.rows[j].cells[0].childNodes[0].style.backgroundColor = "#ffffff"
+        }
         UDform.style.display = "none"
         resetUDform()
     }
@@ -310,7 +319,7 @@
                 var len = response.length
                 for (var i = 0; i < len - 1; i++) {
                     var newRow = table.insertRow(i)
-                    newRow.insertCell().innerHTML = "<a href='javascript:;' onclick='choseRow(" + i + ")'><input type='checkbox' value='" + response[i].accountNo + "'></a>"
+                    newRow.insertCell().innerHTML = "<div class='chose-out'><a href='javascript:;' onclick='choseRow(" + i + ")'><div class='chose-in'><input value='" + response[i].accountNo + "' style='display: none'></div></a></div>"
                     newRow.insertCell().innerHTML = response[i].date
                     newRow.insertCell().innerHTML = response[i].item
                     newRow.insertCell().innerHTML = response[i].amount
@@ -347,7 +356,7 @@
                     var len = response.length
                     for (var i = 0; i < len - 1; i++) {
                         var newRow = table.insertRow(i)
-                        newRow.insertCell().innerHTML = "<a href='javascript:;' onclick='choseRow(" + i + ")'><input type='checkbox' value='" + response[i].accountNo + "'></a>"
+                        newRow.insertCell().innerHTML = "<div class='chose-out'><a href='javascript:;' onclick='choseRow(" + i + ")'><div class='chose-in'><input value='" + response[i].accountNo + "' style='display: none'></div></a></div>"
                         newRow.insertCell().innerHTML = response[i].date
                         newRow.insertCell().innerHTML = response[i].item
                         newRow.insertCell().innerHTML = response[i].amount

@@ -342,7 +342,7 @@ header {
 .item-section .item-head th,
 .item-section .item-tail th,
 .item-section .item-table td {
-    padding: 7.8px 0;
+    padding: 7.7px 0;
     width: 20%;
 }
 
@@ -386,4 +386,25 @@ header {
 .item-section .item-button input:active {
     color: #232837;
     background-color: #5c6170;
+}
+
+.chose-out {
+    background-color: #ffffff;
+    width: 8px;
+    height: 8px;
+    margin: auto;
+    border: solid 2px #ffffff;
+    border-radius: 2px;
+}
+
+.chose-in {
+    width: 8px;
+    height: 8px;
+    margin: auto;
+}
+
+.chose-out:hover {
+    background-color: #7c7c7c;
+    border: solid 2px #ffffff;
+    transition: all .1s ease-in-out;
 }
